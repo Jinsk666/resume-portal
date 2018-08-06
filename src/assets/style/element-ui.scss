@@ -1,0 +1,41 @@
+.container {
+    .el-button {
+        padding-top: .12rem;
+        padding-bottom: .12rem;
+    }
+    .el-collapse {
+        border: 0;
+    }
+    .el-collapse-item__header {
+        height: .48rem;
+        line-height: .48rem;
+        font-size: .16rem;
+    }
+    .el-collapse-item__arrow {
+        line-height: .48rem;
+    }
+    .el-popover {
+        height: .2rem;
+        line-height: .2rem;
+        font-size: .14rem;
+        background: #ededed;
+        border-radius: 6px;
+    }
+}
+
+.JG, .ZZ {
+    .el-tabs__item {
+        height: 70px;
+        line-height: 100px;
+    }
+}
+.JG {
+    .el-tabs__nav{
+        margin-left: 58px;
+    }
+}
+.ZZ {
+    .el-tabs__nav{
+        margin-left: 14px;
+    }
+}
