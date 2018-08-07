@@ -195,3 +195,20 @@ export const formatTime = ( date, format ) => {
 	return data;
 }
 
+
+/**
+ * 获取 scrollTop
+ */
+
+export const getScrollTop = () => {
+	return document.documentElement.scrollTop || document.body.scrollTop;
+}
+
+ /**
+  * 设置scrollTop
+  */
+export const setScrollTop = (code) => {
+	document.documentElement.scrollTop = code;
+	document.body.scrollTop = code;
+}
+

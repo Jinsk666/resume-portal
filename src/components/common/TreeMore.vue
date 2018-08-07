@@ -1,33 +1,43 @@
 <template>
     <!-- 点击树的更多  基本模版 -->
-    <div class="more-model" v-show="toData.show">
+    <div class="more-model" v-show="isShowTreeMore">
         <div class="more-content">
-            <el-row class="more-header" @click="closeMore">
+            <el-row class="more-header">
                 <span @click="closeMore">x</span>
                 <span @click="closeMore">关闭</span>
             </el-row>
-            <img :src="toData.logo" alt="" v-show="toData.data.generalEntityList && toData.data.generalEntityList[0].key == 'IMG'">
+            <img v-if="treeMore.imgs" :src="treeMore.imgs[0]" alt="">
             <el-row
-                class="acc-row"
-                :class="item.key == 'IMG' ? '' : 'factory-info'"
-                v-show="toData.data.generalEntityList.length > 0"
-                v-for="(item, index) in toData.data.generalEntityList"
+                class="acc-row factory-info"
+                v-if="item.label.indexOf('图片') == -1 && item.value"
+                v-for="(item, index) in treeMore.data"
                 :key="index">
-                <el-col v-if="item.key == 'IMG'" :span="24"><img :src="item.value" class="acc-img"></el-col>
-                <el-col v-if="item.key != 'IMG'" :span="8"><div class="left">{{item.key}}</div></el-col>
-                <el-col v-if="item.key != 'IMG'" :span="16"><div class="right t">{{item.value}}</div></el-col>
+                <el-col :span="8"><div class="left">{{item.label}}</div></el-col>
+                <el-col v-if="dateList.includes(item.dataType)" :span="16">
+                    <div class="right t">{{item.value | formatTime('Y-m-d')}}</div>
+                </el-col>
+                <el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
             </el-row>
         </div>
     </div>
 </template>
 
 <script>
+    import { mapState, mapMutations } from 'vuex';
+    import { formatTime, step2Class } from '@/config/mUtils'
     export default {
-        props: ['toData'],
+        props: ['isShowTreeMore'],
         data() {
             return {
                 clientHeight: '',
+                dateList: [3, 4, 5, 6],
             }
+        },
+        filters: {
+			formatTime, step2Class
+		},
+        computed: {
+            ...mapState(['treeMore']),
         },
         mounted: function(){
             this.clientHeight = document.documentElement.clientHeight;
@@ -36,7 +46,7 @@
         },
         methods: {
             closeMore() {
-                this.$emit('closeMore');
+                this.$emit('closeMore')
             }
         }
     }
@@ -57,12 +67,9 @@
             border-radius: 8px;
             position: relative;
             >img {
-			position: absolute;
-			top: .6rem;
-			left: .3rem;
-			width: .5rem;
-			z-index:999;
-		}
+                width: 3.06rem;
+                z-index:999;
+		    }
         }
         .more-header{
             width:.7rem;
@@ -72,5 +79,11 @@
             color:#666;
             text-align: left;
         }
+    }
+    .factory-info {
+    font-size: 16px;
+    padding: .2rem 0;
+    line-height: .2rem;
+    border-bottom: 1px dashed $color2;
     }
 </style>

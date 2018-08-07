@@ -17,15 +17,15 @@
 				<el-row
 					class="acc-row"
 					v-if="stepData.data.imgUrlList"
-					v-for="(item, index1) in stepData.data.imgUrlList"
-					:key="index1">
+					v-for="(item, index) in stepData.data.imgUrlList"
+					:key="index">
 					<el-col :span="24"><img :src="item" class="acc-img"></el-col>
 				</el-row>
 				<el-row
 					class="acc-row factory-info"
 					v-for="(item, index) in stepData.data.generalInfoList"
 					v-if="item.label.indexOf('图片') == -1 && item.value"
-					:key="index">
+					:key="(index + 1000)">
 					<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
 					<el-col v-if="dateList.includes(item.dataType)" :span="16">
 						<div class="right t">{{item.value | formatTime('Y-m-d')}}</div>
@@ -40,7 +40,7 @@
 					:label="item.label || '无返回'"
 					:name="index+'h'"
 					v-for="(item, index) in stepData.data.subModelInfoInfoList"
-					:key="index">
+					:key="(index + 100000)">
 					<span slot="label">
 						<span class="pro-icon-1" v-if="item.label == '种植基本信息'"><svg-icon icon-class="zz"></svg-icon></span>
 						<span class="pro-icon-2" v-else-if="item.label == '环境信息'"><svg-icon icon-class="hj"></svg-icon></span>
@@ -66,7 +66,7 @@
 							class="acc-row factory-info"
 							v-for="(item, index) in item.generalInfoList"
 							v-if="item.label.indexOf('图片') == -1 && item.value"
-							:key="index">
+							:key="(index + 111)">
 							<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
 							<el-col v-if="dateList.includes(item.dataType)" :span="16">
 								<div class="right t">{{item.value | formatTime('Y-m-d')}}</div>
@@ -77,26 +77,27 @@
 					<!-- 特殊步骤 -->
 					<div v-else-if="stepData.data.moduleName == '种植' && item.label == '田间管理'">
 						<!-- 树苗 -->
-						<base-tree :toData="{data: item.subModelInfoInfoList}"></base-tree>
+						<base-tree :toData="{data: item.subModelInfoInfoList}" @viewMore="viewMore"></base-tree>
 					</div>
 						<!-- 加工流程 -->
 					<div v-else-if="stepData.data.moduleName == '加工' && item.label == '工序流程'">
-						<div class="left" style="height: 200px;">
+						<div class="left jg-container">
 							<el-steps direction="vertical">
 								<el-step
 									title=""
 									v-for="(item, index) in item.subModelInfoInfoList"
-									:key="index"
+									:key="(index + 222)"
 								></el-step>
 							</el-steps>
 						</div>
 						<div
 							class="left jg-step"
 							v-for="(item, index) in item.subModelInfoInfoList"
-							:key="index">
+							@click="viewMore2(item)"
+							:key="(index + 1000)">
 							<div v-if="item.imgUrlList"><img :src="item.imgUrlList[0]" alt="图片"></div>
-							<div>工序名称 {{item.generalInfoList[0].value}}</div>
-							<div>生产时间段 {{item.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
+							<div v-if="item.generalInfoList[0].value">工序名称: {{item.generalInfoList[0].value}}</div>
+							<div v-if="item.generalInfoList[1].value">生产时间段: {{item.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
 						</div>
 					</div>
 				</el-tab-pane>
@@ -107,6 +108,7 @@
 </template>
 
 <script>
+	import { mapState, mapMutations } from 'vuex';
 	import BaseTree from '@/components/common/BaseTree'
 	import { formatTime, step2Class } from '@/config/mUtils'
     export default {
@@ -122,6 +124,9 @@
 			formatTime, step2Class
 		},
 		methods: {
+			...mapMutations([
+				'TREE_MORE',
+			]),
 			editStep(index) {
 				this.$emit("editStep", index);
 			},
@@ -130,6 +135,13 @@
 			},
 			handleLeaveStep() {
 				this.$emit("handleLeaveStep");
+			},
+			viewMore() {
+				this.$emit('viewMore');
+			},
+			viewMore2(item, index) {
+				this.TREE_MORE( {data: item.generalInfoList, imgs: item.imgUrlList} );
+				this.$emit('viewMore')
 			}
 		},
     }
@@ -148,9 +160,20 @@
 	.pro-icon-2 {
 		left: 17px;
 	}
+	.jg-container{
+		height: 2rem;
+	}
 	.jg-step {
 		height: 1.7rem;
 		width: calc(100% - 50px);
+		border: 1px solid #ccc;
+		border-radius: 6px;
+		margin-bottom: .1rem;
+		padding: 4px 10px;
+		img {
+			height: 1.1rem;
+			border-radius: 6px;
+		}
 	}
 	.env-info {
 		text-align: center;

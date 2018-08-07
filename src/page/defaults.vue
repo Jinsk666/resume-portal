@@ -1,73 +1,96 @@
 <template>
     <div id="phone">
-        <div class="logo-img" v-if="stepData.imgUrl" :style="{height:'2rem', overflow:'hidden'}">
-            <img :src="stepData.imgUrl" alt="">
-
-        </div>
-        <div class="code">
-            <div class="code-font">溯源码 {{stepData.uniqueCode}}</div>
-        </div>
-        <div class="container clearfix">
-            <div class="intro">
-                <div class="intro-name ellipsis">
-                    {{stepData.productName}}
-                </div>
-            </div>
-            <div ref="baseDom" class="intro-content clear"
-                v-if="stepData.generalInfoList"
-                >
-                <div class="bg-connect">
-                    <div class="bg-connect-left left"></div>
-                    <div class="bg-connect-right right"></div>
-                </div>
-                <!-- 基本信息 -->
-				<el-row :class="item.label == 'IMG' ? '' : 'factory-info'"
-					v-if=" item.value "
-					:span="24"
-					v-for="(item, index) in stepData.generalInfoList"
-					:key="index">
-                    <el-col v-if="item.label != 'IMG'" :span="8"><div class="left">{{item.label}}</div></el-col>
-                    <el-col v-if="item.label != 'IMG'" :span="16"><div class="right t">{{item.value}}</div></el-col>
-                </el-row>
-            </div>
-            <!-- 折叠开始 -->
-            <el-collapse accordion @change="handleAccordionChange" v-model="activeName" class="accordion-list">
-                <el-collapse-item class="acc-li" name="-1" v-if="isMaterial == false && stepData.productInfos && stepData.productInfos.length > 0">
-                    <template slot="title">
-                        <i class="acc-font YL"> 原料 </i>
-                    </template>
-                    <div
-                        class="acc-row acc-phone-material"
-                    >
-                    <span
-                        v-for="(item, index) in stepData.productInfos"
-                        :key="index"
-                        class="ellipsis phone-material">
-                        <router-link :to="{ name: 'defaults', query: {index: index, isMaterial: 'true'}}">
-                            {{item.productName}}
-                        </router-link>
-                    </span>
-                    </div>
-                </el-collapse-item>
-                <div v-for="(item, index) in stepData.moduleInfos" :key="index">
-                    <base-step
-                        :stepData="{data: item, index: index}"
-                    >
-                    </base-step>
-                </div>
-            </el-collapse>
-        </div>
+		<div v-show="!isShowTreeMore">
+			<div class="logo-img" v-if="stepData.imgUrl" :style="{height:'2rem', overflow:'hidden'}">
+				<img :src="stepData.imgUrl" alt="">
+			</div>
+			<div class="code">
+				<div class="code-font">溯源码 {{stepData.uniqueCode}}</div>
+			</div>
+			<div class="container clearfix">
+				<div class="intro">
+					<div class="intro-name ellipsis">
+						{{stepData.productName}}
+					</div>
+				</div>
+				<div ref="baseDom" class="intro-content clear"
+					v-if="stepData.generalInfoList"
+					>
+					<div class="bg-connect">
+						<div class="bg-connect-left left"></div>
+						<div class="bg-connect-right right"></div>
+					</div>
+					<!-- 基本信息 -->
+					<el-row
+						class="factory-info"
+						v-if=" item.value "
+						:span="24"
+						v-for="(item, index) in stepData.generalInfoList"
+						:key="index">
+						<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
+						<el-col :span="16"><div class="right t">{{item.value}}</div></el-col>
+					</el-row>
+				</div>
+				<!-- 折叠开始 -->
+				<el-collapse accordion @change="handleAccordionChange" v-model="activeName" class="accordion-list">
+					<el-collapse-item
+						class="acc-li"
+						name="-1"
+						v-if="isMaterial == false && (stepData.productInfos && stepData.productInfos.length > 0 || stepData.productImportList && stepData.productImportList.length > 0)">
+						<template slot="title">
+							<i class="acc-font YL"> 原料 </i>
+						</template>
+						<div
+							class="acc-row acc-phone-material"
+							v-if="stepData.productInfos"
+						>
+							<span
+								v-for="(item, index) in stepData.productInfos"
+								:key="index"
+								class="ellipsis phone-material">
+								<router-link :to="{ name: 'defaults', query: {index: index, isMaterial: 'true'}}">
+									{{item.productName}}
+								</router-link>
+							</span>
+						</div>
+						<div
+							class="acc-row acc-phone-material"
+							v-if="stepData.productImportList"
+						>
+							<span
+								v-for="(item, index) in stepData.productImportList"
+								:key="index"
+								class="ellipsis LL-button">
+								<a :href="item.value">{{item.label}}</a>
+							</span>
+						</div>
+					</el-collapse-item>
+					<div v-for="(item, index) in stepData.moduleInfos" :key="index">
+						<base-step
+							:stepData="{data: item, index: index}"
+							@viewMore="viewMore"
+						>
+						</base-step>
+					</div>
+				</el-collapse>
+			</div>
+		</div>
+        <tree-more :isShowTreeMore="isShowTreeMore" @closeMore="closeMore"></tree-more>
     </div>
 </template>
 
 <script>
+import { mapState, mapMutations } from 'vuex';
 import BaseStep from "@/components/common/BaseStep";
-import { isImg, formatData } from "@/config/mUtils";
+import TreeMore from "@/components/common/TreeMore";
+import { isImg, formatData, getScrollTop, setScrollTop } from "@/config/mUtils";
 import { getResumeDetails } from "@/api";
 export default {
-  components: { BaseStep },
+  components: { BaseStep, TreeMore },
   data() {
     return {
+	  scrollTop: 0,
+	  isShowTreeMore:false,
       activeName: "",
       isMaterial: false,
       stepData: {
@@ -85,6 +108,9 @@ export default {
       }
     };
   },
+  computed: {
+      ...mapState(['srcollTop'])
+  },
   mounted: function() {
     let index = this.$route.query.index;
     this.isMaterial = this.$route.query.isMaterial || false;
@@ -100,12 +126,42 @@ export default {
   methods: {
     handleAccordionChange(val) {
       this.activeName = val;
-    }
-  }
+	},
+	viewMore() {
+		this.scrollTop = getScrollTop();
+		this.isShowTreeMore = true;
+		setScrollTop(0);
+	},
+	closeMore() {
+		this.isShowTreeMore = false;
+		this.$nextTick( () => {
+				setScrollTop(this.scrollTop);
+		})
+	}
+ },
 };
 </script>
 <style lang="scss" scoped>
 @import "../assets/style/mixin";
+.LL-button {
+    display: inline-block;
+    cursor: pointer;
+    height: .3rem;
+    line-height: .3rem;
+    font-size: 14px;
+    padding: 0 .1rem 0 .22rem !important;
+    margin: .06rem;
+    border:1px solid rgba(86, 190, 158, .54);
+    background-color: rgba(88, 191, 159,.05);
+    @include bis('~@/assets/images/tag.png');
+    @include bR(4px);
+    background-size: .14rem .14rem;
+    background-position: 6px center;
+    color:$color;
+    a {
+        color: rgb(86, 190, 158);
+    }
+}
 .acc-font {
   display: inline-block;
   position: relative;
@@ -198,11 +254,6 @@ export default {
 .container {
   padding: .2rem 0;
   background: $color;
-}
-#phone {
-  width: 3.75rem;
-  margin-top: .2rem;
-  margin: .2rem auto;
 }
 .code {
   @include wh(100%, .69rem);

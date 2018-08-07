@@ -83,6 +83,7 @@
 </template>
 
 <script>
+    import { mapState, mapMutations } from 'vuex';
     import { formatTime } from '@/config/mUtils'
     export default {
         props: ['toData'],
@@ -91,9 +92,13 @@
             }
         },
         methods: {
-            viewMore() {
-                
-            }
+          ...mapMutations([
+              'TREE_MORE',
+          ]),
+          viewMore(index) {
+            this.TREE_MORE( {data: this.toData.data[index].generalInfoList, imgs: this.toData.data[index].imgUrlList} );
+            this.$emit('viewMore', index);
+          }
         },
         filters: {
           formatTime
@@ -107,6 +112,9 @@
 
 @function pxToRem($px) {
   @return $px/100px*1rem;
+}
+.more {
+  cursor: pointer;
 }
 
 // 树
