@@ -51,8 +51,8 @@
         width: 3.75rem;
         .more-content {
             background: #FFF;
-            width:3.46rem;
-            margin: 30px auto;
+            width: 3.46rem;
+            margin: .3rem auto;
             padding: .2rem;
             border-radius: 8px;
             position: relative;

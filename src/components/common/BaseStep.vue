@@ -1,7 +1,8 @@
 <template>
 	<div>
-		<!-- 基本模版 -> ( 图 + 文字 + 履历外链 ) -->
+		<!-- 基本模版 -> -->
 		<el-collapse-item
+			v-if="stepData.data.generalInfoList || stepData.data.subModelInfoInfoList"
 			class="acc-li"
 			:name="stepData.index"
 			:class="stepData.data.moduleName | step2Class"
@@ -12,7 +13,7 @@
 					{{stepData.data.moduleName}}
 				</i>
 			</template>
-			<div v-if="stepData.data.moduleName != '种植' && stepData.data.moduleName != '加工'">
+			<div v-if="stepData.data.generalInfoList && stepData.data.moduleName != '种植' && stepData.data.moduleName != '加工'">
 				<el-row
 					class="acc-row"
 					v-if="stepData.data.imgUrlList"
@@ -33,7 +34,7 @@
 				</el-row>
 			</div>
 			<!-- 种植, 加工, 处理 -->
-			<div v-else-if="stepData.data.moduleName == '种植' || stepData.data.moduleName == '加工'">
+			<div v-else-if="stepData.data.subModelInfoInfoList && stepData.data.moduleName == '种植' || stepData.data.moduleName == '加工'">
 				<el-tabs v-model="activeName2">
 				<el-tab-pane
 					:label="item.label || '无返回'"
@@ -49,7 +50,7 @@
 						{{item.label || '无返回'}}
 					</span>
 					<!-- 基本模型 -->
-					<div class="item-container" v-if="index != 1">
+					<div class="item-container" v-if="item.label != '工序流程' && item.label != '田间管理'">
 						<div class="env-info">
 							<span class="env-info-pointer"></span><span class="env-info-line"></span>
 							<span class="env-info-font">{{item.label}}</span>
@@ -74,11 +75,12 @@
 						</el-row>
 					</div>
 					<!-- 特殊步骤 -->
-					<div v-else-if="stepData.data.moduleName == '种植' && index == 1">
+					<div v-else-if="stepData.data.moduleName == '种植' && item.label == '田间管理'">
 						<!-- 树苗 -->
 						<base-tree :toData="{data: item.subModelInfoInfoList}"></base-tree>
 					</div>
-					<div v-else-if="stepData.data.moduleName == '加工' && index == 1">
+						<!-- 加工流程 -->
+					<div v-else-if="stepData.data.moduleName == '加工' && item.label == '工序流程'">
 						<div class="left" style="height: 200px;">
 							<el-steps direction="vertical">
 								<el-step
@@ -137,30 +139,30 @@
 	@import '../../assets/style/mixin';
 	.pro-icon-1, .pro-icon-2 {
 		position: absolute;
-		top: -26px;
+		top: -69px;
 		font-size: 24px;
 	}
 	.pro-icon-1 {
 		left: 30px;
 	}
 	.pro-icon-2 {
-		left: 36px;
+		left: 17px;
 	}
 	.jg-step {
-		height: 170px;
+		height: 1.7rem;
 		width: calc(100% - 50px);
 	}
 	.env-info {
 		text-align: center;
-		height: 30px;
-		line-height: 30px;
-		margin: 10px 0;
+		height: .3rem;
+		line-height: .3rem;
+		margin: .1rem 0;
 		.env-info-pointer {
 			border: 3.6px solid $color;
 			display: inline-block;
 		}
 		.env-info-line {
-			width: 30px;
+			width: .3rem;
 			height: 2px;
 			position: relative;
 			bottom:2.8px;
@@ -170,7 +172,7 @@
 		.env-info-font {
 			font-size: 18px;
 			display: inline-block;
-			margin: 0 20px;
+			margin: 0 .2rem;
 			color: #30544E;
 		}
 	}
@@ -179,22 +181,22 @@
 		z-index: 99;
 	}
 	.step-edit {
-		margin-right: 10px;
-		height: 30px;
-		width: 30px;
-		margin-top: 10px;
+		margin-right: .1rem;
+		height: .3rem;
+		width: .3rem;
+		margin-top: .1rem;
 		background: $color;
 		border-radius: 4px;
 		i {
 			color: #fff;
 			position: relative;
-			bottom: 8px;
-			left: 6px;
+			bottom: .08rem;
+			left: .06rem;
 		}
 	}
 	.acc-li{
-		margin: 8px 0;
-		padding: 0 20px;
+		margin: .08rem 0;
+		padding: 0 .2rem;
 		background-color: #fff;
 		border-radius: 6px;
 		.QY {
@@ -232,8 +234,8 @@
 	.acc-font{
 		display: inline-block;
 		position: relative;
-		padding-left: 30px;
-		background-size: 20px 20px!important;
+		padding-left: .3rem;
+		background-size: .2rem .2rem!important;
 		background-position: left center;
 		transition: transform .4s;
 		font-style: normal;
@@ -244,12 +246,12 @@
 	}
 	.acc-img {
 		width:100%;
-		margin-bottom: 10px;
+		margin-bottom: .1rem;
 	}
 	.factory-info {
 		font-size: 16px;
-		padding:20px 0;
-		line-height: 20px;
+		padding: .2rem 0;
+		line-height: .2rem;
 		border-bottom: 1px dashed $color2;
 	}
 </style>

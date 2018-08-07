@@ -120,9 +120,78 @@ export const formatTime = ( date, format ) => {
 		case '原料': return 'YL';
 	}
  }
+/**
+ *
+ * @param {Array} data
+ * value 都为空  => Array = null;
+ */
+ const isSetGeneralInfoListNull = data => {
+	if( data.generalInfoList && data.generalInfoList.length != 0 ){
+		let count = 0; // !value count++
+		data.generalInfoList.forEach( val => {
+			if( !val.value ){
+				count++;
+			}
+		});
+		if( data.generalInfoList.length == count ) {
+			data.generalInfoList = null;
+		}
+	}else {
+		data.generalInfoList = null;
+	}
+ }
 
- export const transData = data => {
+
+/**
+ *
+ * @param {Array} data
+ * 控制 隐藏模块
+ */
+ export const formatData = data => {
 	if ( !data ) return;
-	
+	// 基本信息处理
+	isSetGeneralInfoListNull( data );
+	// 处理模块 不包括 种植, 加工
+	if( data.moduleInfos && data.moduleInfos.length != 0) {
+		for( let i = 0; i < data.moduleInfos.length; i++ ){
+			let one = data.moduleInfos[i];
+			if( one.moduleName == '种植' || one.moduleName == '加工' ) {
+				if( !one.subModelInfoInfoList ) continue;
+				for(let y = 0; y < one.subModelInfoInfoList.length; y++) {
+					let sub = one.subModelInfoInfoList[y];
+					if( sub.label == '种植基本信息' || sub.label == '环境信息' || sub.label == '加工基本信息') {
+						isSetGeneralInfoListNull(sub);
+						// 如果 generalInfoList == null && 没有图片  就删掉
+						if( sub.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
+							one.subModelInfoInfoList.splice(y, 1);
+							i--;
+						}
+					}else if(sub.label == '田间管理' || sub.label == '工序流程') {
+						for( let z = 0; z < sub.subModelInfoInfoList.length; z++ ) {
+							let last = sub.subModelInfoInfoList[z];
+							isSetGeneralInfoListNull(last);
+							if( last.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
+								sub.subModelInfoInfoList.splice(z, 1);
+								i--;
+							}
+						}
+						// 流程便利完成 看 subModelInfoInfoList 是否为空
+							// 流程外层 没有 图片 不判断是否有图片
+						if( sub.subModelInfoInfoList == null || (sub.subModelInfoInfoList && sub.subModelInfoInfoList.length == 0)) {
+							one.subModelInfoInfoList.splice(y, 1);
+							i--;
+						}
+					}
+				}
+				// 最外层 判断是否为空
+				if(one.subModelInfoInfoList && one.subModelInfoInfoList.length == 0) {
+					one.subModelInfoInfoList = null;
+				}
+			}else {
+				isSetGeneralInfoListNull(one)
+			}
+		}
+	}
+	return data;
 }
 

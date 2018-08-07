@@ -24,18 +24,21 @@
 }
 
 .JG, .ZZ {
+    .el-tabs__nav-wrap {
+        height: .7rem;
+    }
+    .el-tabs__nav {
+        //width: 100%;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%)!important;
+    }
     .el-tabs__item {
-        height: 70px;
-        line-height: 100px;
-    }
-}
-.JG {
-    .el-tabs__nav{
-        margin-left: 58px;
-    }
-}
-.ZZ {
-    .el-tabs__nav{
-        margin-left: 14px;
+        text-align: center;
+        height: .7rem;
+        line-height: 1rem;
+        >span {
+            position: relative;
+        }
     }
 }

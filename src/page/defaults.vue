@@ -1,7 +1,8 @@
 <template>
     <div id="phone">
-        <div class="logo-img" v-if="stepData.imgUrl">
+        <div class="logo-img" v-if="stepData.imgUrl" :style="{height:'2rem', overflow:'hidden'}">
             <img :src="stepData.imgUrl" alt="">
+
         </div>
         <div class="code">
             <div class="code-font">溯源码 {{stepData.uniqueCode}}</div>
@@ -13,6 +14,7 @@
                 </div>
             </div>
             <div ref="baseDom" class="intro-content clear"
+                v-if="stepData.generalInfoList"
                 >
                 <div class="bg-connect">
                     <div class="bg-connect-left left"></div>
@@ -60,7 +62,7 @@
 
 <script>
 import BaseStep from "@/components/common/BaseStep";
-import { isImg } from "@/config/mUtils";
+import { isImg, formatData } from "@/config/mUtils";
 import { getResumeDetails } from "@/api";
 export default {
   components: { BaseStep },
@@ -89,9 +91,9 @@ export default {
     let resumeCode = this.$route.query.resumeCode || "LL-20180806-000022";
         getResumeDetails(resumeCode).then(data => {
         if (index == undefined) {
-            this.stepData = data.data;
+            this.stepData = formatData(data.data);
         } else {
-            this.stepData = data.data.productInfos[index];
+            this.stepData = formatData(data.data.productInfos[index]);
         }
     });
   },
@@ -107,18 +109,18 @@ export default {
 .acc-font {
   display: inline-block;
   position: relative;
-  padding-left: 30px;
-  background-size: 20px 20px !important;
+  padding-left: .3rem;
+  background-size: .2rem .2rem !important;
   background-position: left center;
   transition: transform 0.4s;
   font-style: normal;
 }
 .logo-img {
-  width: 375px;
+  width: 3.75rem;
 }
 .acc-li {
-  margin: 8px 0;
-  padding: 0 20px;
+  margin: .08rem 0;
+  padding: 0 .2rem;
   background-color: #fff;
   border-radius: 6px;
   .YL {
@@ -129,10 +131,10 @@ export default {
   z-index: 99;
 }
 .step-edit {
-  margin-right: 10px;
-  height: 30px;
-  width: 30px;
-  margin-top: -10px;
+  margin-right: .1rem;
+  height: .3rem;
+  width: .3rem;
+  margin-top: -0.1rem;
   background: $color;
   border-radius: 4px;
   text-align: center;
@@ -142,7 +144,7 @@ export default {
   i {
     color: #fff;
     position: relative;
-    top: 6px;
+    top: .06rem;
   }
 }
 .acc-phone-material {
@@ -150,13 +152,12 @@ export default {
 }
 .phone-material {
   border: 1px solid #e2e2e2;
-  //padding: 4px 14px;
-  width: 40px;
-  height: 30px;
-  line-height: 28px;
-  margin: 6px;
+  width: .4rem;
+  height: .3rem;
+  line-height: .28rem;
+  margin: .06rem;
   float: left;
-  min-width: 80px;
+  min-width: .8rem;
   text-align: center;
   border-radius: 4px;
   a {
@@ -175,9 +176,9 @@ export default {
   }
 }
 .add-step {
-  width: 346px;
-  height: 46px;
-  line-height: 46px;
+  width: 3.46rem;
+  height: .46rem;
+  line-height: .46rem;
   margin: 0 auto;
   text-align: center;
   cursor: pointer;
@@ -185,9 +186,9 @@ export default {
 #mask {
   position: absolute;
   background: rgba(0, 0, 0, 0.5);
-  width: 375px;
+  width: 3.75rem;
   height: 100%;
-  margin: 20px auto;
+  margin: .20rem auto;
   top: 0;
   z-index: 2;
 }
@@ -195,29 +196,29 @@ export default {
   border: 1px solid $color !important;
 }
 .container {
-  padding: 20px 0;
+  padding: .2rem 0;
   background: $color;
 }
 #phone {
-  width: 375px;
-  margin-top: 20px;
-  margin: 20px auto;
+  width: 3.75rem;
+  margin-top: .2rem;
+  margin: .2rem auto;
 }
 .code {
-  @include wh(100%, 69px);
+  @include wh(100%, .69rem);
   position: relative;
   @include bis("~@/assets/images/bg-code.png");
   .code-font {
     @include center();
-    @include wh(100%, 69px);
-    line-height: 69px;
-    font-size: 17px;
+    @include wh(100%, .69rem);
+    line-height: .69rem;
+    font-size: .17rem;
     text-align: center;
   }
 }
 .intro {
   margin: 0 auto;
-  @include wh(346px, 70px);
+  @include wh(3.46rem, .7rem);
   @include bR(9px);
   @include bis("~@/assets/images/bg-name.png");
   background-color: #fff;
@@ -229,15 +230,15 @@ export default {
     @include center();
     color: $color;
     font-weight: bold;
-    width: 200px;
+    width: 2rem;
     text-align: center;
   }
 }
 .intro-content {
-  margin: 20px auto;
-  width: 346px;
+  margin: .2rem auto;
+  width: 3.46rem;
   background-color: #fff;
-  padding: 20px;
+  padding: .2rem;
   @include bR(9px);
   position: relative;
 }
@@ -245,26 +246,26 @@ export default {
   div {
     position: absolute;
     top: -28px;
-    @include wh(6px, 40px);
+    @include wh(6px, .4rem);
     @include bis("~@/assets/images/connect.png");
-    background-size: 6px 40px;
+    background-size: .06rem .4rem;
   }
   .bg-connect-left {
-    left: 20px;
+    left: .2rem;
   }
   .bg-connect-right {
-    right: 20px;
+    right: .2rem;
   }
 }
 .accordion-list {
   font-size: 18px;
-  width: 346px;
+  width: 3.46rem;
   margin: 0 auto;
 }
 .factory-info {
   font-size: 16px;
-  padding: 20px 0;
-  line-height: 20px;
+  padding: .2rem 0;
+  line-height: .2rem;
   border-bottom: 1px dashed $color2;
 }
 .logo-uploader .el-upload {
