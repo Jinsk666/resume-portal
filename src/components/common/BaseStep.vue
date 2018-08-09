@@ -81,7 +81,7 @@
 					</div>
 						<!-- 加工流程 -->
 					<div v-else-if="stepData.data.moduleName == '加工' && item.label == '工序流程'">
-						<div class="left jg-container">
+						<div class="left jg-container" style="display:none;">
 							<el-steps direction="vertical">
 								<el-step
 									title=""
@@ -161,8 +161,7 @@
 		left: 17px;
 	}
 	.jg-step {
-		height: 1.7rem;
-		width: calc(100% - 50px);
+		width: 100%;
 		border: 1px solid #ccc;
 		border-radius: 6px;
 		margin-bottom: .1rem;
