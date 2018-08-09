@@ -160,9 +160,6 @@
 	.pro-icon-2 {
 		left: 17px;
 	}
-	.jg-container{
-		height: 2rem;
-	}
 	.jg-step {
 		height: 1.7rem;
 		width: calc(100% - 50px);

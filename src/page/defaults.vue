@@ -48,7 +48,7 @@
 								v-for="(item, index) in stepData.productInfos"
 								:key="index"
 								class="ellipsis phone-material">
-								<router-link :to="{ name: 'defaults', query: {index: index, isMaterial: 'true'}}">
+								<router-link :to="{ name: 'defaults', query: {resumeCode: resumeCode,index: index, isMaterial: 'true'}}">
 									{{item.productName}}
 								</router-link>
 							</span>
@@ -109,12 +109,14 @@ export default {
     };
   },
   computed: {
-      ...mapState(['srcollTop'])
+      resumeCode:function() {
+        return this.$route.query.resumeCode
+      }
   },
   mounted: function() {
     let index = this.$route.query.index;
     this.isMaterial = this.$route.query.isMaterial || false;
-    let resumeCode = this.$route.query.resumeCode || "LL-20180806-000022";
+    let resumeCode = this.$route.query.resumeCode || "";
         getResumeDetails(resumeCode).then(data => {
         if (index == undefined) {
             this.stepData = formatData(data.data);
