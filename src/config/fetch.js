@@ -6,9 +6,9 @@ import {
 export default async(url = '', data = {}, type = 'GET') => {
 	type = type.toUpperCase();
 	// 测试
-	let path = '/farmeasy-resume-service/resume/V2.0/resumeExhibitionTwo';
+	//let path = '/farmeasy-resume-service/resume/V2.0/resumeExhibitionTwo';
 	// 正式
-	//let path = '/farmeasy-api-gateway/farmeasy-resume-service/resume/V2.0/resumeExhibitionTwo';
+	let path = '/farmeasy-api-gateway/farmeasy-resume-service/resume/V2.0/resumeExhibitionTwo';
 	url = baseUrl + path + url;
 	console.log(url);
 	if (type == 'GET') {
