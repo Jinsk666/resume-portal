@@ -1,8 +1,8 @@
 <template>
     <div id="phone">
 		<div v-show="!isShowTreeMore">
-			<div class="logo-img" v-if="stepData.imgUrl" :style="{height:'2rem', overflow:'hidden'}">
-				<img :src="stepData.imgUrl" alt="">
+			<div class="logo-img" v-if="stepData.imgUrlList && stepData.imgUrlList[0]" :style="{height:'2rem', overflow:'hidden'}">
+				<img :src="stepData.imgUrlList[0].url" alt="">
 			</div>
 			<div class="code">
 				<div class="code-font">溯源码 {{stepData.uniqueCode}}</div>
@@ -10,7 +10,7 @@
 			<div class="container clearfix">
 				<div class="intro">
 					<div class="intro-name ellipsis">
-						{{stepData.productName}}
+						{{stepData.resumeTemplateName}}
 					</div>
 				</div>
 				<div ref="baseDom" class="intro-content clear"
@@ -20,6 +20,32 @@
 						<div class="bg-connect-left left"></div>
 						<div class="bg-connect-right right"></div>
 					</div>
+          <!-- 第三方企业认证 -->
+            <el-row :gutter="20" class="icon-info icon-info-top" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
+              <el-col
+                :span="24 / stepData.authenticationList.length"
+                v-for="(item, index) in stepData.authenticationList"
+                            v-if="item.label"
+                :key="index">
+                <div
+                type="text"
+                class="ellipsis"
+                :class="'factory' + index"
+                @click="thirdActive = index">{{item.label}}</div>
+              </el-col>
+            </el-row>
+            <el-row class="icon-info" v-if="stepData.authenticationList && stepData.authenticationList.length > 0">
+              <el-col
+                class="factory-intro"
+                v-show="thirdActive == index && item.value"
+                :span="24"
+                v-for="(item, index) in stepData.authenticationList"
+                :key="index">
+                {{item.value}}
+                <div class="factory-intro-top"
+                :style="stepData.authenticationList.length == 2 ? (index==1 ?'left:60%;':''): (stepData.authenticationList.length == 3 ? (index==1 ?'left:44%;':(index==2 ?'left:80%;':'')): '')"></div>
+              </el-col>
+				    </el-row>
 					<!-- 基本信息 -->
 					<el-row
 						class="factory-info"
@@ -28,7 +54,10 @@
 						v-for="(item, index) in stepData.generalInfoList"
 						:key="index">
 						<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
-						<el-col :span="16"><div class="right t">{{item.value}}</div></el-col>
+            <el-col v-if="item.label.indexOf('企业') != -1" :span="16">
+              <div class="right t">{{stepData.enterpriseSelectName}}</div>
+            </el-col>
+						<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
 					</el-row>
 				</div>
 				<!-- 折叠开始 -->
@@ -36,20 +65,20 @@
 					<el-collapse-item
 						class="acc-li"
 						name="-1"
-						v-if="isMaterial == false && (stepData.productInfos && stepData.productInfos.length > 0 || stepData.productImportList && stepData.productImportList.length > 0)">
+						v-if="isMaterial == false && (stepData.resumeDataTwoOnes && stepData.resumeDataTwoOnes.length > 0 || stepData.productImportList && stepData.productImportList.length > 0)">
 						<template slot="title">
 							<i class="acc-font YL"> 原料 </i>
 						</template>
 						<div
 							class="acc-row acc-phone-material"
-							v-if="stepData.productInfos"
+							v-if="stepData.resumeDataTwoOnes"
 						>
 							<span
-								v-for="(item, index) in stepData.productInfos"
+								v-for="(item, index) in stepData.resumeDataTwoOnes"
 								:key="index"
 								class="ellipsis phone-material">
 								<router-link :to="{ name: 'defaults', query: {resumeCode: resumeCode,index: index, isMaterial: 'true'}}">
-									{{item.productName}}
+									{{item.resumeTemplateName}}
 								</router-link>
 							</span>
 						</div>
@@ -83,27 +112,28 @@
 import { mapState, mapMutations } from 'vuex';
 import BaseStep from "@/components/common/BaseStep";
 import TreeMore from "@/components/common/TreeMore";
-import { isImg, formatData, getScrollTop, setScrollTop } from "@/config/mUtils";
+import { isImg, formatData, getScrollTop, setScrollTop, template2Data, material2Data } from "@/config/mUtils";
 import { getResumeDetails } from "@/api";
 export default {
   components: { BaseStep, TreeMore },
   data() {
     return {
-	  scrollTop: 0,
-	  isShowTreeMore:false,
+      thirdActive: 0,
+      scrollTop: 0,
+      isShowTreeMore:false,
       activeName: "",
       isMaterial: false,
       stepData: {
-        productName: "", //产品名称
-        imgUrl: "", // 产品图片
-        skinInfoCode: "", //皮肤
-        templateCode: "", //模板
+        enterpriseName:'', // 本机企业
+        enterpriseInfoId:'',
+        resumeTemplateName: "", //产品名称
+        imgUrlList: "", // 产品图片
         uniqueCode: "", // 唯一编码
         generalInfoList: [], //产品字段
         // 产品流程
         moduleInfos: [],
         // 原料列表
-        productInfos: [],
+        resumeDataTwoOnes: [],
         productImportList: [] // 原料外链接
       }
     };
@@ -118,10 +148,17 @@ export default {
     this.isMaterial = this.$route.query.isMaterial || false;
     let resumeCode = this.$route.query.resumeCode || "";
         getResumeDetails(resumeCode).then(data => {
+          // 处理数据的地方
         if (index == undefined) {
-            this.stepData = formatData(data.data);
+            template2Data(data.data).then( () => {
+              this.stepData = data.data;
+              console.log(this.stepData)
+            });
         } else {
-            this.stepData = formatData(data.data.productInfos[index]);
+            Promise.all([material2Data(data.data.resumeDataTwoOnes[index]), template2Data(data.data.resumeDataTwoOnes[index])]).then( () => {
+              this.stepData = data.data.resumeDataTwoOnes[index];
+              console.log(this.stepData)
+            })
         }
     });
   },
@@ -329,4 +366,50 @@ export default {
   overflow: hidden;
   margin: 0 auto;
 }
+.icon-info {
+      font-size: 14px;
+      .factory0 {
+          @include bis('~@/assets/images/factory-1.png');
+      }
+      .factory1 {
+          @include bis('~@/assets/images/factory-2.png');
+      }
+      .factory2 {
+          @include bis('~@/assets/images/factory-3.png');
+      }
+      .ellipsis  {
+          margin: 10px 0;
+          padding-left: 20px;
+          background-size: 16px 18px;
+          height: 20px;
+          line-height: 19px;
+          font-size: 14px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+          width:100%;
+          display: inline-block;
+          text-align: left;
+      }
+      .factory-intro {
+          width: 100%;
+          background-color: #ededed;
+          color:#666;
+          text-align: left;
+          @include bR(4px);
+          padding: 5px 10px;
+          position: relative;
+          .factory-intro-top {
+              position: absolute;
+              width:15px;
+              height:7px;
+              top: -7px;
+              left: 8%;
+              @include bis('~@/assets/images/cart.png');
+          }
+          .factory-intro-top2{
+              left: 20px;
+          }
+      }
+  }
 </style>

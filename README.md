@@ -1,4 +1,4 @@
 # rusume
 履历
 
-npm run build -> /resume-portal/
+npm run build -> /resume-portal-beta/

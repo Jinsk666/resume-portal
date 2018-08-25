@@ -2,7 +2,7 @@
 	<div>
 		<!-- 基本模版 -> -->
 		<el-collapse-item
-			v-if="stepData.data.generalInfoList || stepData.data.subModelInfoInfoList"
+			v-if="stepData.data.generalInfoList || stepData.data.subModelInfoList"
 			class="acc-li"
 			:name="stepData.index"
 			:class="stepData.data.moduleName | step2Class"
@@ -19,7 +19,7 @@
 					v-if="stepData.data.imgUrlList"
 					v-for="(item, index) in stepData.data.imgUrlList"
 					:key="index">
-					<el-col :span="24"><img :src="item" class="acc-img"></el-col>
+					<el-col :span="24"><img :src="item.url" class="acc-img"></el-col>
 				</el-row>
 				<el-row
 					class="acc-row factory-info"
@@ -30,16 +30,19 @@
 					<el-col v-if="dateList.includes(item.dataType)" :span="16">
 						<div class="right t">{{item.value | formatTime('Y-m-d')}}</div>
 					</el-col>
+					<el-col v-else-if="item.label.indexOf('企业') != -1" :span="16">
+						<div class="right t">{{stepData.data.enterpriseSelectName}}</div>
+					</el-col>
 					<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
 				</el-row>
 			</div>
 			<!-- 种植, 加工, 处理 -->
-			<div v-else-if="stepData.data.subModelInfoInfoList && stepData.data.moduleName == '种植' || stepData.data.moduleName == '加工'">
+			<div v-else-if="(stepData.data.moduleName == '种植' || stepData.data.moduleName == '加工')">
 				<el-tabs v-model="activeName2">
 				<el-tab-pane
 					:label="item.label || '无返回'"
 					:name="index+'h'"
-					v-for="(item, index) in stepData.data.subModelInfoInfoList"
+					v-for="(item, index) in stepData.data.subModelInfoList"
 					:key="(index + 100000)">
 					<span slot="label">
 						<span class="pro-icon-1" v-if="item.label == '种植基本信息'"><svg-icon icon-class="zz"></svg-icon></span>
@@ -60,18 +63,21 @@
 							class="acc-row"
 							v-for="(item, index1) in item.imgUrlList"
 							:key="(index1 + 100)">
-							<el-col :span="24"><img :src="item" class="acc-img"></el-col>
+							<el-col :span="24"><img :src="item.url" class="acc-img"></el-col>
 						</el-row>
 						<el-row
 							class="acc-row factory-info"
-							v-for="(item, index) in item.generalInfoList"
-							v-if="item.label.indexOf('图片') == -1 && item.value"
+							v-for="(item1, index) in item.generalInfoList"
+							v-if="item1.label.indexOf('图片') == -1 && item.value"
 							:key="(index + 111)">
-							<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
-							<el-col v-if="dateList.includes(item.dataType)" :span="16">
-								<div class="right t">{{item.value | formatTime('Y-m-d')}}</div>
+							<el-col :span="8"><div class="left">{{item1.label}}</div></el-col>
+							<el-col v-if="dateList.includes(item1.dataType)" :span="16">
+								<div class="right t">{{item1.value | formatTime('Y-m-d')}}</div>
 							</el-col>
-							<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
+							<el-col v-else-if="item1.label.indexOf('企业') != -1" :span="16">
+								<div class="right t">{{item.enterpriseSelectName}}</div>
+							</el-col>
+							<el-col v-else :span="16"><div class="right t">{{item1.value}}</div></el-col>
 						</el-row>
 					</div>
 					<!-- 特殊步骤 -->
@@ -95,7 +101,7 @@
 							v-for="(item, index) in item.subModelInfoInfoList"
 							@click="viewMore2(item)"
 							:key="(index + 1000)">
-							<div v-if="item.imgUrlList"><img :src="item.imgUrlList[0]" alt="图片"></div>
+							<div v-if="item.imgUrlList"><img :src="item.imgUrlList[0].url" alt="图片"></div>
 							<div v-if="item.generalInfoList[0].value">工序名称: {{item.generalInfoList[0].value}}</div>
 							<div v-if="item.generalInfoList[1].value">生产时间段: {{item.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
 						</div>
@@ -227,7 +233,7 @@
 		.TJ {
 			@include bis('~@/assets/images/farm.png');
 		}
-		.ZJ {
+		.JC {
 			@include bis('~@/assets/images/quality.png');
 		}
 		.ZZ {

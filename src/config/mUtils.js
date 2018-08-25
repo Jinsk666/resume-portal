@@ -1,3 +1,4 @@
+import { getResumeData } from '../api';
 /**
  * 存储localStorage
  */
@@ -116,10 +117,66 @@ export const formatTime = ( date, format ) => {
 		case '仓储': return 'CC';
 		case '加工': return 'JG';
 		case '运输': return 'YS';
-		case '质检': return 'ZJ';
+		case '检测': return 'JC';
 		case '原料': return 'YL';
 	}
  }
+const step2Tpye = name => {
+	switch (name) {
+		case '采收': return 3;
+		case '包装': return 5;
+		case '种植': return 2;
+		case '仓储': return 6;
+		case '加工': return 4;
+		case '检测': return 7;
+		case '原料': return 1;
+	}
+ }
+export const template2Data = data => {
+	return new Promise( (resolve, reject) => {
+		if( data.moduleInfos && data.moduleInfos.length != 0 ) {
+			var a = 0;
+			for( var i = 0; i < data.moduleInfos.length; i++ ){
+				var val = data.moduleInfos[i];
+				var type = step2Tpye(val.moduleName) || 1;
+				(function(val, i){
+					if(val.moduleDataCode){
+						getResumeData(val.moduleDataCode, type).then( data1 => {
+							console.log(a)
+							data.moduleInfos[i] = data1.data;
+							a++;
+							console.log(data.moduleInfos[i])
+							if( a == data.moduleInfos.length){
+								resolve()
+							}
+						})
+					}else {
+						a++;
+						console.log(a)
+						if( a == data.moduleInfos.length){
+							resolve()
+						}
+					}
+				}(val, i))
+			}
+		}
+	})
+}
+
+export const material2Data = data => {
+	return new Promise( (resolve, reject) => {
+		getResumeData(data.uniqueCode, 1).then( data1 => {
+			data.generalInfoList = data1.data.generalInfoList;
+			data.imgUrlList = data1.data.imgUrlList;
+			data.logoUrl = data1.data.logoUrl;
+			data.enterpriseName = data1.data.enterpriseSelectName;
+			data.resumeTemplateName = data1.data.moduleName;
+			isSetGeneralInfoListNull(data);
+			resolve();
+		})
+	})
+}
+
 /**
  *
  * @param {Array} data
@@ -152,44 +209,42 @@ export const formatTime = ( date, format ) => {
 	// 基本信息处理
 	isSetGeneralInfoListNull( data );
 	// 处理模块 不包括 种植, 加工
-	if( data.moduleInfos && data.moduleInfos.length != 0) {
-		for( let i = 0; i < data.moduleInfos.length; i++ ){
-			let one = data.moduleInfos[i];
-			if( one.moduleName == '种植' || one.moduleName == '加工' ) {
-				if( !one.subModelInfoInfoList ) continue;
-				for(let y = 0; y < one.subModelInfoInfoList.length; y++) {
-					let sub = one.subModelInfoInfoList[y];
-					if( sub.label == '种植基本信息' || sub.label == '环境信息' || sub.label == '加工基本信息') {
-						isSetGeneralInfoListNull(sub);
-						// 如果 generalInfoList == null && 没有图片  就删掉
-						if( sub.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
-							one.subModelInfoInfoList.splice(y, 1);
-							i--;
-						}
-					}else if(sub.label == '田间管理' || sub.label == '工序流程') {
-						for( let z = 0; z < sub.subModelInfoInfoList.length; z++ ) {
-							let last = sub.subModelInfoInfoList[z];
-							isSetGeneralInfoListNull(last);
-							if( last.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
-								sub.subModelInfoInfoList.splice(z, 1);
-								i--;
-							}
-						}
-						// 流程便利完成 看 subModelInfoInfoList 是否为空
-							// 流程外层 没有 图片 不判断是否有图片
-						if( sub.subModelInfoInfoList == null || (sub.subModelInfoInfoList && sub.subModelInfoInfoList.length == 0)) {
-							one.subModelInfoInfoList.splice(y, 1);
+	for( let i = 0; i < data.moduleInfos.length; i++ ){
+		let one = data.moduleInfos[i];
+		if( one.moduleName == '种植' || one.moduleName == '加工' ) {
+			if( !one.subModelInfoInfoList ) continue;
+			for(let y = 0; y < one.subModelInfoInfoList.length; y++) {
+				let sub = one.subModelInfoInfoList[y];
+				if( sub.label == '种植基本信息' || sub.label == '环境信息' || sub.label == '加工基本信息') {
+					isSetGeneralInfoListNull(sub);
+					// 如果 generalInfoList == null && 没有图片  就删掉
+					if( sub.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
+						one.subModelInfoInfoList.splice(y, 1);
+						i--;
+					}
+				}else if(sub.label == '田间管理' || sub.label == '工序流程') {
+					for( let z = 0; z < sub.subModelInfoInfoList.length; z++ ) {
+						let last = sub.subModelInfoInfoList[z];
+						isSetGeneralInfoListNull(last);
+						if( last.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
+							sub.subModelInfoInfoList.splice(z, 1);
 							i--;
 						}
 					}
+					// 流程便利完成 看 subModelInfoInfoList 是否为空
+						// 流程外层 没有 图片 不判断是否有图片
+					if( sub.subModelInfoInfoList == null || (sub.subModelInfoInfoList && sub.subModelInfoInfoList.length == 0)) {
+						one.subModelInfoInfoList.splice(y, 1);
+						i--;
+					}
 				}
-				// 最外层 判断是否为空
-				if(one.subModelInfoInfoList && one.subModelInfoInfoList.length == 0) {
-					one.subModelInfoInfoList = null;
-				}
-			}else {
-				isSetGeneralInfoListNull(one)
 			}
+			// 最外层 判断是否为空
+			if(one.subModelInfoInfoList && one.subModelInfoInfoList.length == 0) {
+				one.subModelInfoInfoList = null;
+			}
+		} else {
+			isSetGeneralInfoListNull(one)
 		}
 	}
 	return data;
