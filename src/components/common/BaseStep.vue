@@ -30,6 +30,9 @@
 					<el-col v-if="dateList.includes(item.dataType)" :span="16">
 						<div class="right t">{{item.value | formatTime('Y-m-d')}}</div>
 					</el-col>
+					<el-col v-else-if="dateRangeList.includes(item.dataType)" :span="16">
+						<div class="right t">{{item.value && item.value.split('-_-')[0] | formatTime('Y.m.d')}} {{item.value ? '~' : ''}} {{item.value && item.value.split('-_-')[1] | formatTime('Y.m.d')}}</div>
+					</el-col>
 					<el-col v-else-if="item.label.indexOf('企业') != -1" :span="16">
 						<div class="right t">{{stepData.data.enterpriseSelectName}}</div>
 					</el-col>
@@ -37,7 +40,7 @@
 				</el-row>
 			</div>
 			<!-- 种植, 加工, 处理 -->
-			<div v-else-if="(stepData.data.moduleName == '种植' || stepData.data.moduleName == '加工')">
+			<div v-else-if="stepData.data.subModelInfoList && (stepData.data.moduleName == '种植' || stepData.data.moduleName == '加工')">
 				<el-tabs v-model="activeName2">
 				<el-tab-pane
 					:label="item.label || '无返回'"
@@ -61,21 +64,24 @@
 						</div>
 						<el-row
 							class="acc-row"
-							v-for="(item, index1) in item.imgUrlList"
+							v-for="(item2, index1) in item.imgUrlList"
 							:key="(index1 + 100)">
-							<el-col :span="24"><img :src="item.url" class="acc-img"></el-col>
+							<el-col :span="24"><img :src="item2.url" class="acc-img"></el-col>
 						</el-row>
 						<el-row
 							class="acc-row factory-info"
 							v-for="(item1, index) in item.generalInfoList"
-							v-if="item1.label.indexOf('图片') == -1 && item.value"
+							v-if="item1.label.indexOf('图片') == -1 && item1.value"
 							:key="(index + 111)">
 							<el-col :span="8"><div class="left">{{item1.label}}</div></el-col>
 							<el-col v-if="dateList.includes(item1.dataType)" :span="16">
 								<div class="right t">{{item1.value | formatTime('Y-m-d')}}</div>
 							</el-col>
+							<el-col v-else-if="dateRangeList.includes(item1.dataType)" :span="16">
+								<div class="right t">{{item1.value && item1.value.split('-_-')[0] | formatTime('Y.m.d')}} {{item1.value ? '~' : ''}} {{item1.value && item1.value.split('-_-')[1] | formatTime('Y.m.d')}}</div>
+							</el-col>
 							<el-col v-else-if="item1.label.indexOf('企业') != -1" :span="16">
-								<div class="right t">{{item.enterpriseSelectName}}</div>
+								<div class="right t">{{stepData.data.enterpriseSelectName}}</div>
 							</el-col>
 							<el-col v-else :span="16"><div class="right t">{{item1.value}}</div></el-col>
 						</el-row>
@@ -103,7 +109,12 @@
 							:key="(index + 1000)">
 							<div v-if="item.imgUrlList"><img :src="item.imgUrlList[0].url" alt="图片"></div>
 							<div v-if="item.generalInfoList[0].value">工序名称: {{item.generalInfoList[0].value}}</div>
-							<div v-if="item.generalInfoList[1].value">生产时间段: {{item.generalInfoList[1].value | formatTime('Y-m-d')}}</div>
+							<div v-if="item.generalInfoList[1].value">
+								 生产时间段:
+								 {{item.generalInfoList[1].value && item.generalInfoList[1].value.split('-_-'[0]) | formatTime('Y.m.d')}}
+								 {{item.generalInfoList[1].value ? '~' : ''}}
+								 {{item.generalInfoList[1].value && item.generalInfoList[1].value.split('-_-'[1]) | formatTime('Y.m.d')}}
+							</div>
 						</div>
 					</div>
 				</el-tab-pane>
@@ -123,7 +134,8 @@
         data() {
             return {
 				activeName2: '0h',
-				dateList: [3, 4, 5, 6],
+				dateList: [3, 4],
+				dateRangeList: [5, 6],
             }
 		},
 		filters: {
