@@ -3,7 +3,7 @@
     <div class="more-model" v-show="isShowTreeMore">
         <div class="more-content">
             <el-row class="more-header">
-                <span @click="closeMore">x</span>
+                <!-- <span @click="closeMore">x</span> -->
                 <span @click="closeMore">关闭</span>
             </el-row>
             <img

@@ -65,6 +65,18 @@
               <a style="color:#409EFF;" :href="stepData.externalQuoteList[0].externalURL">{{stepData.externalQuoteList[0].externalName}}</a>
             </div>
           </el-row> -->
+          <!-- 文档引用 -->
+          <el-row class="acc-row factory-info"
+            v-if="stepData.documentUrlList && stepData.documentUrlList[0] && stepData.documentUrlList[0].url"
+          >
+            <div class="LL-button-doc ellipsis"
+              v-for="(item, index) in stepData.documentUrlList"
+              v-if="item.url"
+              :key="index + 2222"
+            >
+              <a class="LL-href-doc" :href="item.url">{{item.name}}</a>
+            </div>
+          </el-row>
 				</div>
 				<!-- 折叠开始 -->
 				<el-collapse accordion @change="handleAccordionChange" v-model="activeName" class="accordion-list">
@@ -167,13 +179,16 @@ export default {
               console.log(this.stepData)
             });
         } else {
-          material2Data(data.data.resumeDataTwoOnes[index]).then( () => {
-            this.stepData = data.data.resumeDataTwoOnes[index];
-            if( this.stepData.externalQuoteList  &&  this.stepData.externalQuoteList[0].externalURL){
-              window.location.href= this.stepData.externalQuoteList[0].externalURL;
+          let me = this;
+          material2Data(data.data.resumeDataTwoOnes[index]).then( (res) => {
+            me.stepData = res;
+            if( me.stepData.externalQuoteList && me.stepData.externalQuoteList[0] &&  me.stepData.externalQuoteList[0].externalURL){
+              window.location.href= me.stepData.externalQuoteList[0].externalURL;
             }else {
-              template2Data(this.stepData).then( () => {
-                this.stepData = formatData(this.stepData)
+              template2Data(me.stepData).then( () => {
+                me.stepData = formatData(me.stepData)
+                this.mainLoading.close()
+                console.log(me.stepData)
               })
             }
           })
@@ -190,15 +205,14 @@ export default {
   methods: {
     handleMaterial(resumeCode, index) {
       this.mainLoading = this.$loading({text:'拼命加载中...'});
-      material2Data(this.stepData.resumeDataTwoOnes[index]).then( () => {
-        this.stepData = this.stepData.resumeDataTwoOnes[index];
-        if( this.stepData.externalQuoteList  &&  this.stepData.externalQuoteList[0].externalURL){
-          window.location.href= this.stepData.externalQuoteList[0].externalURL;
+      material2Data(this.stepData.resumeDataTwoOnes[index]).then( (res) => {
+        if( res.externalQuoteList  && res.externalQuoteList[0] && res.externalQuoteList[0].externalURL){
+          window.location.href= res.externalQuoteList[0].externalURL;
         }else {
           // template2Data(this.stepData).then( () => {
           //   this.stepData = formatData(this.stepData)
           // })
-          this.$router.push({name: 'defaults', query: {query: {resumeCode: resumeCode,index: index, isMaterial: 'true'}}})
+          this.$router.push({name: 'defaults', query: {resumeCode: resumeCode,index: index, isMaterial: 'true'}})
         }
       })
     },
@@ -221,6 +235,20 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../assets/style/mixin";
+.LL-button-doc {
+		max-width: 3rem;
+		color: #409EFF;
+		text-align: center;
+		font-size: .14rem;
+		display: inline-block;
+		cursor: pointer;
+		height: .3rem;
+		line-height: .3rem;
+	}
+	.LL-href-doc {
+		width: 100%;
+		color: #409EFF;
+	}
 .LL-button {
     display: inline-block;
     cursor: pointer;

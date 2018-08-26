@@ -180,7 +180,7 @@ export const material2Data = data => {
 			data.externalQuoteList = data1.data.externalQuoteList;
 			data.uniqueCode = data1.data.uniqueCode;
 			isSetGeneralInfoListNull(data);
-			resolve();
+			resolve(data);
 		}).catch( err => {
 			reject(err)
 		})
