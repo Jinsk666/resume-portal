@@ -134,7 +134,7 @@ const step2Tpye = name => {
  }
 export const template2Data = data => {
 	return new Promise( (resolve, reject) => {
-		if( data.moduleInfos && data.moduleInfos.length != 0 ) {
+		if( data && data.moduleInfos && data.moduleInfos.length != 0 ) {
 			var a = 0;
 			for( var i = 0; i < data.moduleInfos.length; i++ ){
 				var val = data.moduleInfos[i];
@@ -161,6 +161,8 @@ export const template2Data = data => {
 					}
 				}(val, i))
 			}
+		}else {
+			resolve()
 		}
 	})
 }
@@ -227,7 +229,7 @@ export const material2Data = data => {
 					// 如果 generalInfoList == null && 没有图片  就删掉
 					if( sub.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
 						one.subModelInfoList.splice(y, 1);
-						i--;
+						y--;
 					}
 				}else if(sub.label == '田间管理' || sub.label == '工序流程') {
 					for( let z = 0; z < sub.subModelInfoInfoList.length; z++ ) {
@@ -235,14 +237,14 @@ export const material2Data = data => {
 						isSetGeneralInfoListNull(last);
 						if( last.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
 							sub.subModelInfoInfoList.splice(z, 1);
-							i--;
+							z--;
 						}
 					}
 					// 流程便利完成 看 subModelInfoInfoList 是否为空
 						// 流程外层 没有 图片 不判断是否有图片
 					if( sub.subModelInfoInfoList == null || (sub.subModelInfoInfoList && sub.subModelInfoInfoList.length == 0)) {
 						one.subModelInfoList.splice(y, 1);
-						i--;
+						y--;
 					}
 				}
 			}
