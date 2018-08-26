@@ -2,7 +2,6 @@
 	<div>
 		<!-- 基本模版 -> -->
 		<el-collapse-item
-			v-if="stepData.data.generalInfoList || stepData.data.subModelInfoList"
 			class="acc-li"
 			:name="stepData.index"
 			:class="stepData.data.moduleName | step2Class"
