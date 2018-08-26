@@ -169,6 +169,10 @@ export const template2Data = data => {
 
 export const material2Data = data => {
 	return new Promise( (resolve, reject) => {
+		if( !data.uniqueCode ) {
+			resolve(data);
+			return;
+		}
 		getResumeData(data.uniqueCode, 1).then( data1 => {
 			console.log(data1)
 			data.generalInfoList = data1.data.generalInfoList;
