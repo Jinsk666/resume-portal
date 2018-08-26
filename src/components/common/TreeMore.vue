@@ -6,15 +6,26 @@
                 <span @click="closeMore">x</span>
                 <span @click="closeMore">关闭</span>
             </el-row>
-            <img v-if="treeMore.imgs" :src="treeMore.imgs[0]" alt="">
+            <img
+                v-if="treeMore.imgs && treeMore.imgs.length > 0"
+                v-for="(item, index) in treeMore.imgs"
+                :key="index"
+                :src="item.url" alt="">
             <el-row
                 class="acc-row factory-info"
                 v-if="item.label.indexOf('图片') == -1 && item.value"
                 v-for="(item, index) in treeMore.data"
-                :key="index">
+                :key="(index+222)">
                 <el-col :span="8"><div class="left">{{item.label}}</div></el-col>
                 <el-col v-if="dateList.includes(item.dataType)" :span="16">
                     <div class="right t">{{item.value | formatTime('Y-m-d')}}</div>
+                </el-col>
+                <el-col v-else-if="dateRangeList.includes(item.dataType)" :span="16">
+                    <div class="right t">
+                        {{item.value && item.value.split('-_-')[0] | formatTime('Y.m.d')}}
+                        {{item.value ? '~' : ''}}
+                        {{item.value && item.value.split('-_-')[1] | formatTime('Y.m.d')}}
+                    </div>
                 </el-col>
                 <el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
             </el-row>
@@ -30,7 +41,8 @@
         data() {
             return {
                 clientHeight: '',
-                dateList: [3, 4, 5, 6],
+                dateList: [3, 4],
+                dateRangeList: [5, 6],
             }
         },
         filters: {

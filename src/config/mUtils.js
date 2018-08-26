@@ -149,6 +149,8 @@ export const template2Data = data => {
 							if( a == data.moduleInfos.length){
 								resolve()
 							}
+						}).catch( err => {
+							reject(err);
 						})
 					}else {
 						a++;
@@ -166,13 +168,19 @@ export const template2Data = data => {
 export const material2Data = data => {
 	return new Promise( (resolve, reject) => {
 		getResumeData(data.uniqueCode, 1).then( data1 => {
+			console.log(data1)
 			data.generalInfoList = data1.data.generalInfoList;
 			data.imgUrlList = data1.data.imgUrlList;
 			data.logoUrl = data1.data.logoUrl;
-			data.enterpriseName = data1.data.enterpriseSelectName;
+			data.enterpriseSelectName = data1.data.enterpriseSelectName;
 			data.resumeTemplateName = data1.data.moduleName;
+			data.documentUrlList = data1.data.documentUrlList;
+			data.externalQuoteList = data1.data.externalQuoteList;
+			data.uniqueCode = data1.data.uniqueCode;
 			isSetGeneralInfoListNull(data);
 			resolve();
+		}).catch( err => {
+			reject(err)
 		})
 	})
 }
@@ -208,18 +216,17 @@ export const material2Data = data => {
 	if ( !data ) return;
 	// 基本信息处理
 	isSetGeneralInfoListNull( data );
-	// 处理模块 不包括 种植, 加工
 	for( let i = 0; i < data.moduleInfos.length; i++ ){
 		let one = data.moduleInfos[i];
 		if( one.moduleName == '种植' || one.moduleName == '加工' ) {
-			if( !one.subModelInfoInfoList ) continue;
-			for(let y = 0; y < one.subModelInfoInfoList.length; y++) {
-				let sub = one.subModelInfoInfoList[y];
+			if( !one.subModelInfoList ) continue;
+			for(let y = 0; y < one.subModelInfoList.length; y++) {
+				let sub = one.subModelInfoList[y];
 				if( sub.label == '种植基本信息' || sub.label == '环境信息' || sub.label == '加工基本信息') {
 					isSetGeneralInfoListNull(sub);
 					// 如果 generalInfoList == null && 没有图片  就删掉
 					if( sub.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
-						one.subModelInfoInfoList.splice(y, 1);
+						one.subModelInfoList.splice(y, 1);
 						i--;
 					}
 				}else if(sub.label == '田间管理' || sub.label == '工序流程') {
@@ -234,14 +241,14 @@ export const material2Data = data => {
 					// 流程便利完成 看 subModelInfoInfoList 是否为空
 						// 流程外层 没有 图片 不判断是否有图片
 					if( sub.subModelInfoInfoList == null || (sub.subModelInfoInfoList && sub.subModelInfoInfoList.length == 0)) {
-						one.subModelInfoInfoList.splice(y, 1);
+						one.subModelInfoList.splice(y, 1);
 						i--;
 					}
 				}
 			}
 			// 最外层 判断是否为空
-			if(one.subModelInfoInfoList && one.subModelInfoInfoList.length == 0) {
-				one.subModelInfoInfoList = null;
+			if(one.subModelInfoList && one.subModelInfoList.length == 0) {
+				one.subModelInfoList = null;
 			}
 		} else {
 			isSetGeneralInfoListNull(one)

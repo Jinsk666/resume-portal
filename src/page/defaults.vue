@@ -49,7 +49,7 @@
 					<!-- 基本信息 -->
 					<el-row
 						class="factory-info"
-						v-if=" item.value "
+						v-if="item.value"
 						:span="24"
 						v-for="(item, index) in stepData.generalInfoList"
 						:key="index">
@@ -59,13 +59,19 @@
             </el-col>
 						<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
 					</el-row>
+          <!-- <el-row v-if="stepData.externalQuoteList && stepData.externalQuoteList[0].externalURL" class="factory-info">
+            <el-col :span="8"><div class="left">相关链接</div></el-col>
+            <div class="right t">
+              <a style="color:#409EFF;" :href="stepData.externalQuoteList[0].externalURL">{{stepData.externalQuoteList[0].externalName}}</a>
+            </div>
+          </el-row> -->
 				</div>
 				<!-- 折叠开始 -->
 				<el-collapse accordion @change="handleAccordionChange" v-model="activeName" class="accordion-list">
 					<el-collapse-item
 						class="acc-li"
 						name="-1"
-						v-if="isMaterial == false && (stepData.resumeDataTwoOnes && stepData.resumeDataTwoOnes.length > 0 || stepData.productImportList && stepData.productImportList.length > 0)">
+						v-if="isMaterial == false && stepData.resumeDataTwoOnes && stepData.resumeDataTwoOnes.length > 0">
 						<template slot="title">
 							<i class="acc-font YL"> 原料 </i>
 						</template>
@@ -75,24 +81,24 @@
 						>
 							<span
 								v-for="(item, index) in stepData.resumeDataTwoOnes"
+                @click="handleMaterial(resumeCode, index)"
 								:key="index"
 								class="ellipsis phone-material">
-								<router-link :to="{ name: 'defaults', query: {resumeCode: resumeCode,index: index, isMaterial: 'true'}}">
+								<!-- <router-link :to="{ name: 'defaults', query: {resumeCode: resumeCode,index: index, isMaterial: 'true'}}">
 									{{item.resumeTemplateName}}
-								</router-link>
+								</router-link> -->
+                {{item.resumeTemplateName}}
 							</span>
 						</div>
-						<div
+						<!-- <div
 							class="acc-row acc-phone-material"
-							v-if="stepData.productImportList"
+							v-if="stepData.externalQuoteList || stepData.externalQuoteList[0].externalURL"
 						>
 							<span
-								v-for="(item, index) in stepData.productImportList"
-								:key="index"
 								class="ellipsis LL-button">
-								<a :href="item.value">{{item.label}}</a>
+								<a :href="stepData.externalQuoteList[0].externalURL">{{stepData.externalQuoteList[0].externalName}}</a>
 							</span>
-						</div>
+						</div> -->
 					</el-collapse-item>
 					<div v-for="(item, index) in stepData.moduleInfos" :key="index">
 						<base-step
@@ -118,6 +124,7 @@ export default {
   components: { BaseStep, TreeMore },
   data() {
     return {
+      mainLoading: false,
       thirdActive: 0,
       scrollTop: 0,
       isShowTreeMore:false,
@@ -125,6 +132,7 @@ export default {
       isMaterial: false,
       stepData: {
         enterpriseName:'', // 本机企业
+        enterpriseSelectName:'', // 选择的企业
         enterpriseInfoId:'',
         resumeTemplateName: "", //产品名称
         imgUrlList: "", // 产品图片
@@ -134,7 +142,8 @@ export default {
         moduleInfos: [],
         // 原料列表
         resumeDataTwoOnes: [],
-        productImportList: [] // 原料外链接
+        externalQuoteList: [],
+        documentUrlList: [],
       }
     };
   },
@@ -144,25 +153,55 @@ export default {
       }
   },
   mounted: function() {
+    this.mainLoading = this.$loading({text:'拼命加载中...'});
     let index = this.$route.query.index;
     this.isMaterial = this.$route.query.isMaterial || false;
     let resumeCode = this.$route.query.resumeCode || "";
-        getResumeDetails(resumeCode).then(data => {
+      getResumeDetails(resumeCode).then(data => {
           // 处理数据的地方
         if (index == undefined) {
             template2Data(data.data).then( () => {
-              this.stepData = data.data;
+              this.mainLoading.close()
+              //this.stepData = data.data;
+              this.stepData = formatData(data.data)
               console.log(this.stepData)
             });
         } else {
-            Promise.all([material2Data(data.data.resumeDataTwoOnes[index]), template2Data(data.data.resumeDataTwoOnes[index])]).then( () => {
-              this.stepData = data.data.resumeDataTwoOnes[index];
-              console.log(this.stepData)
-            })
+          material2Data(data.data.resumeDataTwoOnes[index]).then( () => {
+            this.stepData = data.data.resumeDataTwoOnes[index];
+            if( this.stepData.externalQuoteList  &&  this.stepData.externalQuoteList[0].externalURL){
+              window.location.href= this.stepData.externalQuoteList[0].externalURL;
+            }else {
+              template2Data(this.stepData).then( () => {
+                this.stepData = formatData(this.stepData)
+              })
+            }
+          })
+
+            // Promise.all([material2Data(data.data.resumeDataTwoOnes[index]), template2Data(data.data.resumeDataTwoOnes[index])]).then( () => {
+            //   this.mainLoading.close()
+            //   //this.stepData = data.data.resumeDataTwoOnes[index];
+            //   this.stepData = formatData(data.data.resumeDataTwoOnes[index])
+            //   console.log(this.stepData)
+            // })
         }
     });
   },
   methods: {
+    handleMaterial(resumeCode, index) {
+      this.mainLoading = this.$loading({text:'拼命加载中...'});
+      material2Data(this.stepData.resumeDataTwoOnes[index]).then( () => {
+        this.stepData = this.stepData.resumeDataTwoOnes[index];
+        if( this.stepData.externalQuoteList  &&  this.stepData.externalQuoteList[0].externalURL){
+          window.location.href= this.stepData.externalQuoteList[0].externalURL;
+        }else {
+          // template2Data(this.stepData).then( () => {
+          //   this.stepData = formatData(this.stepData)
+          // })
+          this.$router.push({name: 'defaults', query: {query: {resumeCode: resumeCode,index: index, isMaterial: 'true'}}})
+        }
+      })
+    },
     handleAccordionChange(val) {
       this.activeName = val;
 	},
