@@ -194,11 +194,17 @@ export const material2Data = data => {
 /**
  *
  * @param {Array} data
- * value 都为空  => Array = null;
+ * value 都为空  => Array = null;   is 用来判断是否换名字  1 不换  null  换
  */
- const isSetGeneralInfoListNull = data => {
+ const isSetGeneralInfoListNull = (data, is) => {
 	if( data.generalInfoList && data.generalInfoList.length != 0 ){
 		let count = 0; // !value count++
+		if( !data.moduleName2 ){
+			data.moduleName2 = data.moduleName;
+		}
+		if( !is && ( data.moduleName == '仓储' || data.moduleName == '加工' || data.moduleName == '包装' || data.moduleName == '检测') ) {
+			data.moduleName = data.generalInfoList[0].value || data.moduleName;
+		}
 		data.generalInfoList.forEach( val => {
 			if( !val.value ){
 				count++;
@@ -209,6 +215,9 @@ export const material2Data = data => {
 		}
 	}else {
 		data.generalInfoList = null;
+		if( !data.moduleName2 ){
+			data.moduleName2 = data.moduleName;
+		}
 	}
  }
 
@@ -226,10 +235,13 @@ export const material2Data = data => {
 		let one = data.moduleInfos[i];
 		if( one.moduleName == '种植' || one.moduleName == '加工' ) {
 			if( !one.subModelInfoList ) continue;
+			if( !one.moduleName2 ) one.moduleName2 = one.moduleName;
 			for(let y = 0; y < one.subModelInfoList.length; y++) {
 				let sub = one.subModelInfoList[y];
 				if( sub.label == '种植基本信息' || sub.label == '环境信息' || sub.label == '加工基本信息') {
-					isSetGeneralInfoListNull(sub);
+					if( sub.label == '环境信息') {
+						isSetGeneralInfoListNull(sub, 1);
+					}
 					// 如果 generalInfoList == null && 没有图片  就删掉
 					if( sub.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
 						one.subModelInfoList.splice(y, 1);
@@ -238,7 +250,7 @@ export const material2Data = data => {
 				}else if(sub.label == '田间管理' || sub.label == '工序流程') {
 					for( let z = 0; z < sub.subModelInfoInfoList.length; z++ ) {
 						let last = sub.subModelInfoInfoList[z];
-						isSetGeneralInfoListNull(last);
+						isSetGeneralInfoListNull(last, 1);
 						if( last.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
 							sub.subModelInfoInfoList.splice(z, 1);
 							z--;
@@ -279,4 +291,5 @@ export const setScrollTop = (code) => {
 	document.documentElement.scrollTop = code;
 	document.body.scrollTop = code;
 }
+
 
