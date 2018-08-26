@@ -8,7 +8,7 @@ export default async(url = '', data = {}, type = 'GET') => {
 	// 测试
 	//let path = '/farmeasy-resume-service/resume/V2.1/resumeExhibitionTwo';
 	// 正式
-	let path = '/farmeasy-resume-service/resume/V2.1/resumeExhibitionTwoOne';
+	let path = '/farmeasy-api-gateway/farmeasy-resume-service/resume/V2.1/resumeExhibitionTwoOne';
 	url = baseUrl + path + url;
 	console.log(url);
 	if (type == 'GET') {
