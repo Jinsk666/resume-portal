@@ -142,10 +142,10 @@ export const template2Data = data => {
 				(function(val, i){
 					if(val.moduleDataCode){
 						getResumeData(val.moduleDataCode, type).then( data1 => {
-							console.log(a)
+							//console.log(a)
 							data.moduleInfos[i] = data1.data;
 							a++;
-							console.log(data.moduleInfos[i])
+							//console.log(data.moduleInfos[i])
 							if( a == data.moduleInfos.length){
 								resolve()
 							}
@@ -154,7 +154,7 @@ export const template2Data = data => {
 						})
 					}else {
 						a++;
-						console.log(a)
+						//console.log(a)
 						if( a == data.moduleInfos.length){
 							resolve()
 						}
@@ -174,7 +174,7 @@ export const material2Data = data => {
 			return;
 		}
 		getResumeData(data.uniqueCode, 1).then( data1 => {
-			console.log(data1)
+			//console.log(data1)
 			data.generalInfoList = data1.data.generalInfoList;
 			data.imgUrlList = data1.data.imgUrlList;
 			data.logoUrl = data1.data.logoUrl;

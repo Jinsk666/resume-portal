@@ -59,6 +59,10 @@
             </el-col>
 						<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
 					</el-row>
+          <el-row class="factory-info" v-if="!isMaterial">
+              <el-col :span="8"><div class="left">企业名称</div></el-col>
+              <el-col :span="16"><div class="right t">{{stepData.enterpriseName}}</div></el-col>
+          </el-row>
           <!-- <el-row v-if="stepData.externalQuoteList && stepData.externalQuoteList[0].externalURL" class="factory-info">
             <el-col :span="8"><div class="left">相关链接</div></el-col>
             <div class="right t">
@@ -114,6 +118,7 @@
 					</el-collapse-item>
 					<div v-for="(item, index) in stepData.moduleInfos" :key="index">
 						<base-step
+              v-if="isRender"
 							:stepData="{data: item, index: index}"
 							@viewMore="viewMore"
 						>
@@ -136,11 +141,12 @@ export default {
   components: { BaseStep, TreeMore },
   data() {
     return {
+      isRender: false, //渲染手风琴
       mainLoading: false,
       thirdActive: 0,
       scrollTop: 0,
       isShowTreeMore:false,
-      activeName: "",
+      activeName: "1",
       isMaterial: false,
       stepData: {
         enterpriseName:'', // 本机企业
@@ -169,14 +175,16 @@ export default {
     let index = this.$route.query.index;
     this.isMaterial = this.$route.query.isMaterial || false;
     let resumeCode = this.$route.query.resumeCode || "";
+      // if(this.isMaterial) {
+      //   window.location.reload();
+      // }
       getResumeDetails(resumeCode).then(data => {
           // 处理数据的地方
         if (index == undefined) {
             template2Data(data.data).then( () => {
               this.mainLoading.close()
-              //this.stepData = data.data;
               this.stepData = formatData(data.data)
-              console.log(this.stepData)
+              this.isRender = true;
             });
         } else {
           let me = this;
@@ -185,10 +193,10 @@ export default {
             if( me.stepData.externalQuoteList && me.stepData.externalQuoteList[0] &&  me.stepData.externalQuoteList[0].externalURL){
               window.location.href= me.stepData.externalQuoteList[0].externalURL;
             }else {
+              this.mainLoading.close()
               template2Data(me.stepData).then( () => {
                 me.stepData = formatData(me.stepData)
-                this.mainLoading.close()
-                console.log(me.stepData)
+                this.isRender = true;
               })
             }
           })
@@ -200,7 +208,7 @@ export default {
             //   console.log(this.stepData)
             // })
         }
-    });
+      });
   },
   methods: {
     handleMaterial(resumeCode, index) {
