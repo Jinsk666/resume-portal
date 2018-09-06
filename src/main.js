@@ -6,10 +6,16 @@ import router from './router'
 import store from './store'
 import '@/config/rem'
 import '@/assets/style/common.scss'
+
 import elementUi from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import '@/assets/style/element-ui.scss'
 import '@/assets/style/element-variables.scss'
+
+import MintUI from 'mint-ui'
+import 'mint-ui/lib/style.css'
+
+Vue.use(MintUI)
 
 import FastClick from 'fastclick'
 import fetch from '@/config/fetch'
@@ -24,6 +30,11 @@ if ('addEventListener' in document) {
 
 Vue.use(elementUi);
 Vue.config.productionTip = false
+
+import BaiduMap from 'vue-baidu-map' // 百度地图
+Vue.use(BaiduMap, {
+    ak: 'ShpB32ZSyuF7pGexsWkcA4Iu9Nq5CYpO'
+})
 
 // 路由拦截  判断进入哪个主题
 router.beforeEach((to, from, next) => {

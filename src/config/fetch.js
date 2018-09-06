@@ -6,9 +6,9 @@ import {
 export default async(url = '', data = {}, type = 'GET') => {
 	type = type.toUpperCase();
 	// 测试
-	//let path = '/farmeasy-resume-service/resume/V2.1/resumeExhibitionTwo';
+	let path = '';
 	// 正式
-	let path = '/farmeasy-api-gateway/farmeasy-resume-service/resume/V2.1/resumeExhibitionTwoOne';
+	//let path = '/farmeasy-api-gateway';
 	url = baseUrl + path + url;
 	console.log(url);
 	if (type == 'GET') {
@@ -36,6 +36,8 @@ export default async(url = '', data = {}, type = 'GET') => {
 		if (type == 'POST') {
 			sendData = JSON.stringify(data);
 			requestObj.setRequestHeader("Content-type", "application/json");
+			requestObj.setRequestHeader("Platform-Code", "1s7kc8zvwwat");
+			requestObj.setRequestHeader("Platform-Secret", "08xwwf336woy1688uudkelyyhl3i13mk");
 		}
 
 		requestObj.send(sendData);

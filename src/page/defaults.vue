@@ -55,13 +55,24 @@
 						:key="index">
 						<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
             <el-col v-if="item.label.indexOf('企业') != -1" :span="16">
-              <div class="right t">{{stepData.enterpriseSelectName}}</div>
+              <img class="right"
+                  src="@/assets/images/icon-map.png" alt=""
+                  style="width:20px;"
+                  @click="handleShowMap(item.value)">
+              <div class="right t" @click="handleShowMap(item.value)">{{stepData.enterpriseSelectName}}</div>
             </el-col>
 						<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
 					</el-row>
+          <!-- 这部分是产品的 企业信息 不用单独调用接口  对应的是 管理端 右上角的企业 -->
           <el-row class="factory-info" v-if="!isMaterial">
               <el-col :span="8"><div class="left">企业名称</div></el-col>
-              <el-col :span="16"><div class="right t">{{stepData.enterpriseName}}</div></el-col>
+              <el-col :span="16">
+                <img class="right"
+                  src="@/assets/images/icon-map.png" alt=""
+                  style="width:20px;"
+                  @click="handleShowMap(stepData.insertUser, 'base')">
+                <div class="right t" @click="handleShowMap(stepData.insertUser, 'base')">{{stepData.enterpriseName}}</div>
+              </el-col>
           </el-row>
           <!-- <el-row v-if="stepData.externalQuoteList && stepData.externalQuoteList[0].externalURL" class="factory-info">
             <el-col :span="8"><div class="left">相关链接</div></el-col>
@@ -128,17 +139,26 @@
 			</div>
 		</div>
         <tree-more :isShowTreeMore="isShowTreeMore" @closeMore="closeMore"></tree-more>
+        <base-map
+          v-if="isShowMap"
+          :isShowMap="isShowMap"
+          :dCenter="center"
+          @handleClose="handleClose"
+        ></base-map>
     </div>
 </template>
 
 <script>
+
 import { mapState, mapMutations } from 'vuex';
 import BaseStep from "@/components/common/BaseStep";
 import TreeMore from "@/components/common/TreeMore";
+import BaseMap from "@/components/common/BaseMap";
 import { isImg, formatData, getScrollTop, setScrollTop, template2Data, material2Data } from "@/config/mUtils";
-import { getResumeDetails } from "@/api";
+import { getResumeDetails, getFactory, getBaseFactory } from "@/api";
+
 export default {
-  components: { BaseStep, TreeMore },
+  components: { BaseStep, TreeMore, BaseMap },
   data() {
     return {
       isRender: false, //渲染手风琴
@@ -162,7 +182,9 @@ export default {
         resumeDataTwoOnes: [],
         externalQuoteList: [],
         documentUrlList: [],
-      }
+      },
+      isShowMap: false,
+      center:{}, // == mapGeneralInfoList
     };
   },
   computed: {
@@ -226,19 +248,51 @@ export default {
     },
     handleAccordionChange(val) {
       this.activeName = val;
-	},
-	viewMore() {
-		this.scrollTop = getScrollTop();
-		this.isShowTreeMore = true;
-		setScrollTop(0);
-	},
-	closeMore() {
-		this.isShowTreeMore = false;
-		this.$nextTick( () => {
-				setScrollTop(this.scrollTop);
-		})
-	}
- },
+    },
+    viewMore() {
+      this.scrollTop = getScrollTop();
+      this.isShowTreeMore = true;
+      setScrollTop(0);
+    },
+    closeMore() {
+      this.isShowTreeMore = false;
+      this.$nextTick( () => {
+          setScrollTop(this.scrollTop);
+      })
+    },
+    // 地图
+    handleShowMap(code, type) {
+      this.loading = this.$loading();
+      if( type != 'base' ) { // 需要掉借口
+        getFactory(code).then( data => {
+          this.loading.close();
+          if( data.data.mapGeneralInfoList && data.data.mapGeneralInfoList[0] ) {
+            this.center = data.data.mapGeneralInfoList;
+            this.isShowMap = true;
+          }else {
+            this.$toast('暂时无法定位');
+          }
+        }).catch( err => {
+          this.loading.close();
+        })
+      }else {
+        getBaseFactory(code).then( data => {
+          this.loading.close();
+          if( data.data && data.data.longitude ){
+            this.center = [{value: data.data.longitude}, {value: data.data.latitude}]
+            this.isShowMap = true;
+          }else {
+            this.$toast('暂时无法定位');
+          }
+        }).catch( err => {
+          this.loading.close();
+        })
+      }
+    },
+    handleClose() {
+      this.isShowMap = false;
+    }
+  },
 };
 </script>
 <style lang="scss" scoped>
