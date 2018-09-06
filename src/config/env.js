@@ -12,7 +12,8 @@ let routerMode = 'hash';
 
 if (process.env.NODE_ENV == 'development') {
 	//baseUrl = '/apis';
-	baseUrl = 'http://cs.nongchangyun.cn';
+	//baseUrl = 'http://cs.nongchangyun.cn';
+	baseUrl = 'http://auth.farmeasy.cn';
 }else if(process.env.NODE_ENV == 'production'){
 	// 测试地址
 	baseUrl = 'http://cs.nongchangyun.cn';

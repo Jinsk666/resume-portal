@@ -160,7 +160,7 @@ export const template2Data = data => {
 						}
 					}
 				}(val, i))
-			}
+			} 
 		}else {
 			resolve()
 		}
@@ -204,6 +204,8 @@ export const material2Data = data => {
 		}
 		if( !is && ( data.moduleName == '仓储' || data.moduleName == '加工' || data.moduleName == '包装' || data.moduleName == '检测') ) {
 			data.moduleName = data.generalInfoList[0].value || data.moduleName;
+			//赋值 之后就 为null  这样就不会在页面显示
+			data.generalInfoList[0].value = null;
 		}
 		data.generalInfoList.forEach( val => {
 			if( !val.value ){
@@ -256,7 +258,7 @@ export const material2Data = data => {
 							z--;
 						}
 					}
-					// 流程便利完成 看 subModelInfoInfoList 是否为空
+					// 流程遍历完成 看 subModelInfoInfoList 是否为空
 						// 流程外层 没有 图片 不判断是否有图片
 					if( sub.subModelInfoInfoList == null || (sub.subModelInfoInfoList && sub.subModelInfoInfoList.length == 0)) {
 						one.subModelInfoList.splice(y, 1);

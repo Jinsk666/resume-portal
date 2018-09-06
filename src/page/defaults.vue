@@ -54,8 +54,8 @@
 						v-for="(item, index) in stepData.generalInfoList"
 						:key="index">
 						<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
-            <el-col v-if="item.label.indexOf('企业') != -1" :span="16">
-              <img class="right"
+            <el-col v-if="item.label.indexOf('企业') != -1" :span="16" style="padding-right: 20px;">
+              <img class="icon-map"
                   src="@/assets/images/icon-map.png" alt=""
                   style="width:20px;"
                   @click="handleShowMap(item.value)">
@@ -66,8 +66,8 @@
           <!-- 这部分是产品的 企业信息 不用单独调用接口  对应的是 管理端 右上角的企业 -->
           <el-row class="factory-info" v-if="!isMaterial">
               <el-col :span="8"><div class="left">企业名称</div></el-col>
-              <el-col :span="16">
-                <img class="right"
+              <el-col :span="16" style="padding-right: 20px;">
+                <img class="icon-map"
                   src="@/assets/images/icon-map.png" alt=""
                   style="width:20px;"
                   @click="handleShowMap(stepData.insertUser, 'base')">
@@ -297,6 +297,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../assets/style/mixin";
+.icon-map {
+  position: absolute;
+  right: 0;
+}
 .LL-button-doc {
 		max-width: 3rem;
 		color: #409EFF;
