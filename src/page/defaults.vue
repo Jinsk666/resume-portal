@@ -88,6 +88,7 @@
               v-for="(item, index) in stepData.documentUrlList"
               v-if="item.url"
               :key="index + 2222"
+              :style="{float: index%2 == 0 ?  'left' : 'right'}"
             >
               <a class="LL-href-doc" :href="item.url">
                 <span class="LL-doc-font ellipsis">{{item.name}}</span>
@@ -309,7 +310,8 @@ export default {
 		color: #51bd9c;
 		display: inline-block;
 		height: .3rem;
-		width:45%;
+    width:48%;
+    margin-bottom: 6px;
 		a {
 			max-width: 3rem;
 			color: #51bd9c;
@@ -344,7 +346,8 @@ export default {
 			border-bottom-right-radius: 3px;
 		}
 		.LL-link-icon {
-			background: #409EFF url('~@/assets/images/icon-doc.png') no-repeat center center !important;
+      background: #409EFF url('~@/assets/images/icon-doc.png') no-repeat center center;
+      background-size: 14px;
 		}
 	}
 	.LL-href-doc {

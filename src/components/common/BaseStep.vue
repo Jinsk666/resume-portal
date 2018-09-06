@@ -12,7 +12,8 @@
 					{{stepData.data.moduleName}}
 				</i>
 			</template>
-			<div v-if="stepData.data.generalInfoList && stepData.data.moduleName != '种植' && stepData.data.moduleName != '加工'">
+			<div v-if="(stepData.data.generalInfoList || (stepData.data.documentUrlList && stepData.data.documentUrlList.length > 0) || (stepData.data.externalQuoteList && stepData.data.externalQuoteList.lemngth > 0) )
+				&& stepData.data.moduleName != '种植' && stepData.data.moduleName != '加工'">
 				<el-row
 					class="acc-row"
 					v-if="stepData.data.imgUrlList && stepData.data.imgUrlList[0]"
@@ -45,10 +46,11 @@
 						v-for="(item, index) in stepData.data.externalQuoteList"
 						v-if="item.externalURL"
 						:key="(index + 100000)"
+						:style="{float: index%2 == 0 ?  'left' : 'right'}"
 					>
 						<a class="LL-href-doc" :href="item.externalURL">
-							<span class="LL-link-font ellipsis">{{item.externalName}}</span>
-							<span class="LL-link-icon"></span>
+							<span class="LL-link-font LL-doc-font ellipsis">{{item.externalName}}</span>
+							<span class="LL-link-icon LL-doc-icon "></span>
 						</a>
 					</div>
 				</el-row>
@@ -60,6 +62,7 @@
 						v-for="(item, index) in stepData.data.documentUrlList"
 						v-if="item.url"
 						:key="index + 2222"
+						:style="{float: index%2 == 0 ?  'left' : 'right'}"
 					>
 						<a class="LL-href-doc" :href="item.url">
 							<span class="LL-doc-font ellipsis">{{item.name}}</span>
@@ -115,29 +118,31 @@
 							</el-col>
 							<el-col v-else :span="16"><div class="right t">{{item1.value}}</div></el-col>
 						</el-row>
-						<!-- 外部链接 -->
+						<!-- 外部链接   种植 加工的外链 还是在 内层-->
 						<el-row class="acc-row factory-info"
-							v-if="stepData.data.externalQuoteList && stepData.data.externalQuoteList[0] && stepData.data.externalQuoteList[0].externalURL"
+							v-if="item.externalQuoteList && item.externalQuoteList[0] && item.externalQuoteList[0].externalURL"
 						>
 							<div class="LL-button-doc"
-								v-for="(item, index) in stepData.data.externalQuoteList"
+								v-for="(item, index) in item.externalQuoteList"
 								v-if="item.externalURL"
 								:key="(index + 100000)"
+								:style="{float: index%2 == 0 ?  'left' : 'right'}"
 							>
 								<a class="LL-href-doc" :href="item.externalURL">
-									<span class="LL-link-font ellipsis">{{item.externalName}}</span>
-									<span class="LL-link-icon"></span>
+									<span class="LL-link-font LL-doc-font ellipsis">{{item.externalName}}</span>
+									<span class="LL-link-icon LL-doc-icon"></span>
 								</a>
 							</div>
 						</el-row>
-						<!-- 文档引用 -->
+						<!-- 文档引用  文档在最外层  -->
 						<el-row class="acc-row factory-info"
-							v-if="stepData.data.documentUrlList && stepData.data.documentUrlList[0] && stepData.data.documentUrlList[0].url"
+							v-if=" (item.label == '种植基本信息' || item.label == '加工基本信息') &&  stepData.data.documentUrlList && stepData.data.documentUrlList[0] && stepData.data.documentUrlList[0].url"
 						>
 							<div class="LL-button-doc"
 								v-for="(item, index) in stepData.data.documentUrlList"
 								v-if="item.url"
 								:key="index + 2222"
+								:style="{float: index%2 == 0 ?  'left' : 'right'}"
 							>
 								<a class="LL-href-doc" :href="item.url">
 									<span class="LL-doc-font ellipsis">{{item.name}}</span>
@@ -249,7 +254,8 @@
 		color: #51bd9c;
 		display: inline-block;
 		height: .3rem;
-		width:45%;
+		width:48%;
+		margin-bottom: 6px;
 		a {
 			max-width: 3rem;
 			color: #51bd9c;
@@ -284,7 +290,8 @@
 			border-bottom-right-radius: 3px;
 		}
 		.LL-link-icon {
-			background: #409EFF url('~@/assets/images/icon-doc.png') no-repeat center center !important;
+			background: #409EFF url('~@/assets/images/icon-doc.png') no-repeat center center;
+			background-size: 14px;
 		}
 	}
 	.LL-href-doc {

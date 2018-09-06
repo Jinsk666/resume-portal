@@ -245,7 +245,8 @@ export const material2Data = data => {
 						isSetGeneralInfoListNull(sub, 1);
 					}
 					// 如果 generalInfoList == null && 没有图片  就删掉
-					if( sub.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
+					if( sub.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0)
+						&& !(sub.documentUrlList && sub.documentUrlList.length == 0) && !(sub.externalQuoteList && sub.externalQuoteList.length == 0) ) {
 						one.subModelInfoList.splice(y, 1);
 						y--;
 					}
@@ -253,14 +254,18 @@ export const material2Data = data => {
 					for( let z = 0; z < sub.subModelInfoInfoList.length; z++ ) {
 						let last = sub.subModelInfoInfoList[z];
 						isSetGeneralInfoListNull(last, 1);
-						if( last.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0) ) {
+						if( last.generalInfoList == null && !(sub.imgUrlList && sub.imgUrlList.length == 0)
+							&& !(sub.externalQuoteList && sub.externalQuoteList.length == 0) ) {
 							sub.subModelInfoInfoList.splice(z, 1);
 							z--;
 						}
 					}
+					if( sub.label == '田间管理' && sub.subModelInfoInfoList && sub.subModelInfoInfoList.length > 0) {
+						sub.subModelInfoInfoList.reverse();
+					}
 					// 流程遍历完成 看 subModelInfoInfoList 是否为空
 						// 流程外层 没有 图片 不判断是否有图片
-					if( sub.subModelInfoInfoList == null || (sub.subModelInfoInfoList && sub.subModelInfoInfoList.length == 0)) {
+					if( sub.subModelInfoInfoList == null || (sub.subModelInfoInfoList && sub.subModelInfoInfoList.length == 0) ) {
 						one.subModelInfoList.splice(y, 1);
 						y--;
 					}
