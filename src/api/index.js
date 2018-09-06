@@ -12,7 +12,7 @@ export const getResumeData = (uniqueCode, type) => fetch('/farmeasy-resume-servi
 },'POST')
 
 // 模版企业
-export const getFactory = code => fetch('/farmeasy-resume-service/resume/V2.1/enterpriseInfoTwoOne/getDetail/' + code,{
+export const getFactory = code => fetch('/farmeasy-resume-service/resume/V2.1/resumeExhibitionTwoOne/getEnterpriseDetail/' + code,{
 
 })
 // 模版企业

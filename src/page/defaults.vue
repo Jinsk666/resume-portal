@@ -5,7 +5,7 @@
 				<img :src="stepData.imgUrlList[0].url" alt="">
 			</div>
 			<div class="code">
-				<div class="code-font">溯源码 {{stepData.uniqueCode}}</div>
+				<div class="code-font">{{stepData.uniqueCode}}</div>
 			</div>
 			<div class="container clearfix">
 				<div class="intro">
