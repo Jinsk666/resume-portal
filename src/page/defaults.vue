@@ -5,7 +5,7 @@
 				<img :src="stepData.imgUrlList[0].url" alt="">
 			</div>
 			<div class="code">
-				<div class="code-font">{{stepData.uniqueCode}}</div>
+				<div class="code-font">{{resumeCode}}</div>
 			</div>
 			<div class="container clearfix">
 				<div class="intro">
@@ -84,12 +84,15 @@
           <el-row class="acc-row factory-info"
             v-if="stepData.documentUrlList && stepData.documentUrlList[0] && stepData.documentUrlList[0].url"
           >
-            <div class="LL-button-doc ellipsis"
+            <div class="LL-button-doc"
               v-for="(item, index) in stepData.documentUrlList"
               v-if="item.url"
               :key="index + 2222"
             >
-              <a class="LL-href-doc" :href="item.url">{{item.name}}</a>
+              <a class="LL-href-doc" :href="item.url">
+                <span class="LL-doc-font ellipsis">{{item.name}}</span>
+                <span class="LL-doc-icon"></span>
+              </a>
             </div>
           </el-row>
 				</div>
@@ -303,17 +306,49 @@ export default {
 }
 .LL-button-doc {
 		max-width: 3rem;
-		color: #409EFF;
-		text-align: center;
-		font-size: .14rem;
+		color: #51bd9c;
 		display: inline-block;
-		cursor: pointer;
 		height: .3rem;
-		line-height: .3rem;
+		width:45%;
+		a {
+			max-width: 3rem;
+			color: #51bd9c;
+			text-align: left;
+			font-size: .14rem;
+			display: inline-block;
+			cursor: pointer;
+			height: .3rem;
+			line-height: .3rem;
+			width:100%;
+			border: 1px solid #e7e7e7;
+			border-radius: 4px;
+		}
+		.LL-doc-font {
+			float:left;
+			width: calc(100% - 0.3rem);
+			height: 100%;
+			color: #51bd9c;
+			padding: 0 4px;
+			line-height: .28rem;
+		}
+		.LL-link-font {
+			color: #409EFF !important;
+		}
+		.LL-doc-icon {
+			width: .3rem;
+			height: 100%;
+			float: right;
+			background: #51bd9c url('~@/assets/images/icon-doc.png') no-repeat center center;
+			background-size: 14px;
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
+		.LL-link-icon {
+			background: #409EFF url('~@/assets/images/icon-doc.png') no-repeat center center !important;
+		}
 	}
 	.LL-href-doc {
 		width: 100%;
-		color: #409EFF;
 	}
 .LL-button {
     display: inline-block;

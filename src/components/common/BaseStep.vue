@@ -41,24 +41,30 @@
 				<el-row class="acc-row factory-info"
 					v-if="stepData.data.externalQuoteList && stepData.data.externalQuoteList[0] && stepData.data.externalQuoteList[0].externalURL"
 				>
-					<div class="LL-button ellipsis"
+					<div class="LL-button-doc"
 						v-for="(item, index) in stepData.data.externalQuoteList"
 						v-if="item.externalURL"
 						:key="(index + 100000)"
 					>
-						<a class="LL-href" :href="item.externalURL">{{item.externalName}}</a>
+						<a class="LL-href-doc" :href="item.externalURL">
+							<span class="LL-link-font ellipsis">{{item.externalName}}</span>
+							<span class="LL-link-icon"></span>
+						</a>
 					</div>
 				</el-row>
 				<!-- 文档引用 -->
 				<el-row class="acc-row factory-info"
 					v-if="stepData.data.documentUrlList && stepData.data.documentUrlList[0] && stepData.data.documentUrlList[0].url"
 				>
-					<div class="LL-button-doc ellipsis"
+					<div class="LL-button-doc"
 						v-for="(item, index) in stepData.data.documentUrlList"
 						v-if="item.url"
 						:key="index + 2222"
 					>
-						<a class="LL-href-doc" :href="item.url">{{item.name}}</a>
+						<a class="LL-href-doc" :href="item.url">
+							<span class="LL-doc-font ellipsis">{{item.name}}</span>
+							<span class="LL-doc-icon"></span>
+						</a>
 					</div>
 				</el-row>
 			</div>
@@ -113,24 +119,30 @@
 						<el-row class="acc-row factory-info"
 							v-if="stepData.data.externalQuoteList && stepData.data.externalQuoteList[0] && stepData.data.externalQuoteList[0].externalURL"
 						>
-							<div class="LL-button ellipsis"
+							<div class="LL-button-doc"
 								v-for="(item, index) in stepData.data.externalQuoteList"
 								v-if="item.externalURL"
 								:key="(index + 100000)"
 							>
-								<a class="LL-href" :href="item.externalURL">{{item.externalName}}</a>
+								<a class="LL-href-doc" :href="item.externalURL">
+									<span class="LL-link-font ellipsis">{{item.externalName}}</span>
+									<span class="LL-link-icon"></span>
+								</a>
 							</div>
 						</el-row>
 						<!-- 文档引用 -->
 						<el-row class="acc-row factory-info"
 							v-if="stepData.data.documentUrlList && stepData.data.documentUrlList[0] && stepData.data.documentUrlList[0].url"
 						>
-							<div class="LL-button-doc ellipsis"
+							<div class="LL-button-doc"
 								v-for="(item, index) in stepData.data.documentUrlList"
 								v-if="item.url"
 								:key="index + 2222"
 							>
-								<a class="LL-href-doc" :href="item.url">{{item.name}}</a>
+								<a class="LL-href-doc" :href="item.url">
+									<span class="LL-doc-font ellipsis">{{item.name}}</span>
+									<span class="LL-doc-icon"></span>
+								</a>
 							</div>
 						</el-row>
 					</div>
@@ -222,9 +234,6 @@
 		line-height: .3rem;
 		font-size: .14rem;
 		padding: 0 .1rem 0 .22rem !important;
-		// @include bis('~@/assets/images/tag.png');
-		// background-size: .14rem .14rem;
-		// background-position: .06rem center;
 		margin: 0 20px 20px 0!important;
 		border:1px solid rgba(86, 190, 158, .54);
 		background-color: rgba(88, 191, 159,.05);
@@ -237,17 +246,49 @@
 	}
 	.LL-button-doc {
 		max-width: 3rem;
-		color: #409EFF;
-		text-align: center;
-		font-size: .14rem;
+		color: #51bd9c;
 		display: inline-block;
-		cursor: pointer;
 		height: .3rem;
-		line-height: .3rem;
+		width:45%;
+		a {
+			max-width: 3rem;
+			color: #51bd9c;
+			text-align: left;
+			font-size: .14rem;
+			display: inline-block;
+			cursor: pointer;
+			height: .3rem;
+			line-height: .3rem;
+			width:100%;
+			border: 1px solid #e7e7e7;
+			border-radius: 4px;
+		}
+		.LL-doc-font {
+			float:left;
+			width: calc(100% - 0.3rem);
+			height: 100%;
+			color: #51bd9c;
+			padding: 0 4px;
+			line-height: .28rem;
+		}
+		.LL-link-font {
+			color: #409EFF !important;
+		}
+		.LL-doc-icon {
+			width: .3rem;
+			height: 100%;
+			float: right;
+			background: #51bd9c url('~@/assets/images/icon-doc.png') no-repeat center center;
+			background-size: 14px;
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
+		.LL-link-icon {
+			background: #409EFF url('~@/assets/images/icon-doc.png') no-repeat center center !important;
+		}
 	}
 	.LL-href-doc {
 		width: 100%;
-		color: #409EFF;
 	}
 	.LL-href {
 		width: 100%;
