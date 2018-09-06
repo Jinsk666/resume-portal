@@ -36,6 +36,11 @@ Vue.use(BaiduMap, {
     ak: 'ShpB32ZSyuF7pGexsWkcA4Iu9Nq5CYpO'
 })
 
+import * as filters from './filters' // global filters
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
+
 // 路由拦截  判断进入哪个主题
 router.beforeEach((to, from, next) => {
     if(to.meta.require) {
