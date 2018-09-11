@@ -65,7 +65,7 @@
 						:style="{float: index%2 == 0 ?  'left' : 'right'}"
 					>
 						<a class="LL-href-doc" :href="item.url">
-							<span class="LL-doc-font ellipsis">{{item.name.split('.')}}</span>
+							<span class="LL-doc-font ellipsis">{{item.name | splitPoint}}</span>
 							<span class="LL-doc-icon"></span>
 						</a>
 					</div>

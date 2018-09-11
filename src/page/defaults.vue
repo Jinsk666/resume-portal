@@ -205,6 +205,12 @@ export default {
       //   window.location.reload();
       // }
       getResumeDetails(resumeCode).then(data => {
+        // 置入 皮肤
+        if( !data.data ) return;
+        if( data.data.backColor ) {
+          let phone = document.getElementById('phone');
+          phone.className = data.data.backColor;
+        }
           // 处理数据的地方
         if (index == undefined) {
             template2Data(data.data).then( () => {

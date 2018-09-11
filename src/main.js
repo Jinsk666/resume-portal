@@ -6,6 +6,9 @@ import router from './router'
 import store from './store'
 import '@/config/rem'
 import '@/assets/style/common.scss'
+// theme
+import '@/assets/style/theme.scss'
+
 
 import elementUi from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
