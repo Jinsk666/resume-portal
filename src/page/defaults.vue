@@ -206,6 +206,13 @@ export default {
       // }
       getResumeDetails(resumeCode).then(data => {
         // 置入 皮肤
+        try{
+          let dom = document.querySelectorAll('.el-loading-mask')[0];
+          dom.style.display = 'none';
+        }catch(e){
+
+        }
+        this.mainLoading.close();
         if( !data.data ) return;
         if( data.data.backColor ) {
           let phone = document.getElementById('phone');
@@ -221,16 +228,19 @@ export default {
         } else {
           let me = this;
           material2Data(data.data.resumeDataTwoOnes[index]).then( (res) => {
+            this.mainLoading.close();
             me.stepData = res;
             if( me.stepData.externalQuoteList && me.stepData.externalQuoteList[0] &&  me.stepData.externalQuoteList[0].externalURL){
               window.location.href= me.stepData.externalQuoteList[0].externalURL;
             }else {
-              this.mainLoading.close()
               template2Data(me.stepData).then( () => {
                 me.stepData = formatData(me.stepData)
                 this.isRender = true;
+                this.mainLoading.close();
               })
             }
+          }).catch(() => {
+            this.mainLoading.close()
           })
 
             // Promise.all([material2Data(data.data.resumeDataTwoOnes[index]), template2Data(data.data.resumeDataTwoOnes[index])]).then( () => {
@@ -246,6 +256,7 @@ export default {
     handleMaterial(resumeCode, index) {
       this.mainLoading = this.$loading({text:'拼命加载中...'});
       material2Data(this.stepData.resumeDataTwoOnes[index]).then( (res) => {
+        this.mainLoading.close()
         if( res.externalQuoteList  && res.externalQuoteList[0] && res.externalQuoteList[0].externalURL){
           window.location.href= res.externalQuoteList[0].externalURL;
         }else {
@@ -254,6 +265,8 @@ export default {
           // })
           this.$router.push({name: 'defaults', query: {resumeCode: resumeCode,index: index, isMaterial: 'true'}})
         }
+      }).catch(() => {
+        this.mainLoading.close()
       })
     },
     handleAccordionChange(val) {
@@ -272,10 +285,10 @@ export default {
     },
     // 地图
     handleShowMap(code, type) {
-      this.loading = this.$loading();
+      // this.loading = this.$loading();
       if( type != 'base' ) { // 需要掉借口
         getFactory(code).then( data => {
-          this.loading.close();
+          // this.loading.close();
           if( data.data.mapGeneralInfoList && data.data.mapGeneralInfoList[0] ) {
             this.center = data.data.mapGeneralInfoList;
             this.isShowMap = true;
@@ -283,11 +296,11 @@ export default {
             this.$toast('暂时无法定位');
           }
         }).catch( err => {
-          this.loading.close();
+          // this.loading.close();
         })
       }else {
         getBaseFactory(code).then( data => {
-          this.loading.close();
+          // this.loading.close();
           if( data.data && data.data.longitude ){
             this.center = [{value: data.data.longitude}, {value: data.data.latitude}]
             this.isShowMap = true;
@@ -295,7 +308,7 @@ export default {
             this.$toast('暂时无法定位');
           }
         }).catch( err => {
-          this.loading.close();
+          // this.loading.close();
         })
       }
     },
