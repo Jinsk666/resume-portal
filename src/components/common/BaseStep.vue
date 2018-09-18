@@ -33,7 +33,11 @@
 					<el-col v-else-if="dateRangeList.includes(item.dataType)" :span="16">
 						<div class="right t">{{item.value && item.value.split('-_-')[0] | formatTime('Y.m.d')}} {{item.value ? '~' : ''}} {{item.value && item.value.split('-_-')[1] | formatTime('Y.m.d')}}</div>
 					</el-col>
-					<el-col v-else-if="item.label.indexOf('企业') != -1" :span="16">
+					<el-col v-else-if="item.label.indexOf('企业') != -1" :span="16" style="padding-right: 20px;">
+						<img class="icon-map"
+							src="@/assets/images/icon-map.png" alt=""
+							style="width:20px;"
+							@click="handleShowMap(item.value)">
 						<div class="right t">{{stepData.data.enterpriseSelectName}}</div>
 					</el-col>
 					<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
@@ -113,7 +117,11 @@
 							<el-col v-else-if="dateRangeList.includes(item1.dataType)" :span="16">
 								<div class="right t">{{item1.value && item1.value.split('-_-')[0] | formatTime('Y.m.d')}} {{item1.value ? '~' : ''}} {{item1.value && item1.value.split('-_-')[1] | formatTime('Y.m.d')}}</div>
 							</el-col>
-							<el-col v-else-if="item1.label.indexOf('企业') != -1" :span="16">
+							<el-col v-else-if="item1.label.indexOf('企业') != -1" :span="16" style="padding-right:20px;">
+								<img class="icon-map"
+									src="@/assets/images/icon-map.png" alt=""
+									style="width:20px;"
+									@click="handleShowMap(item1.value)">
 								<div class="right t">{{stepData.data.enterpriseSelectName}}</div>
 							</el-col>
 							<el-col v-else :span="16"><div class="right t">{{item1.value}}</div></el-col>
@@ -193,6 +201,7 @@
 	import { mapState, mapMutations } from 'vuex';
 	import BaseTree from '@/components/common/BaseTree'
 	import { formatTime, step2Class } from '@/config/mUtils'
+
     export default {
 		components: { BaseTree },
         props: ['stepData'],
@@ -225,6 +234,10 @@
 			viewMore2(item, index) {
 				this.TREE_MORE( {data: item.generalInfoList, imgs: item.imgUrlList} );
 				this.$emit('viewMore')
+			},
+			handleShowMap(code) {
+				if( !code ) return;
+				this.$emit('handleShowMap', code)
 			}
 		},
     }
@@ -232,6 +245,10 @@
 
 <style lang="scss" scoped>
 	@import '../../assets/style/mixin';
+	.icon-map {
+		position: absolute;
+		right: 0;
+	}
 	.LL-button {
 		display: inline-block;
 		cursor: pointer;

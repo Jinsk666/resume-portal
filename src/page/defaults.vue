@@ -136,6 +136,7 @@
               v-if="isRender"
 							:stepData="{data: item, index: index}"
 							@viewMore="viewMore"
+              @handleShowMap="handleShowMap"
 						>
 						</base-step>
 					</div>
@@ -250,6 +251,13 @@ export default {
             //   console.log(this.stepData)
             // })
         }
+      }).catch(() => {
+        this.mainLoading.close()
+        try{
+          let dom = document.querySelectorAll('.el-loading-mask')[0];
+          dom.style.display = 'none';
+        }catch(e){
+        }
       });
   },
   methods: {
@@ -285,10 +293,14 @@ export default {
     },
     // 地图
     handleShowMap(code, type) {
-      // this.loading = this.$loading();
+      if( !code ) {
+        this.$toast('暂时无法定位');
+        return;
+      }
+      this.loading = this.$loading();
       if( type != 'base' ) { // 需要掉借口
         getFactory(code).then( data => {
-          // this.loading.close();
+          this.loading.close();
           if( data.data.mapGeneralInfoList && data.data.mapGeneralInfoList[0] ) {
             this.center = data.data.mapGeneralInfoList;
             this.isShowMap = true;
@@ -296,11 +308,11 @@ export default {
             this.$toast('暂时无法定位');
           }
         }).catch( err => {
-          // this.loading.close();
+          this.loading.close();
         })
       }else {
         getBaseFactory(code).then( data => {
-          // this.loading.close();
+          this.loading.close();
           if( data.data && data.data.longitude ){
             this.center = [{value: data.data.longitude}, {value: data.data.latitude}]
             this.isShowMap = true;
@@ -308,7 +320,7 @@ export default {
             this.$toast('暂时无法定位');
           }
         }).catch( err => {
-          // this.loading.close();
+          this.loading.close();
         })
       }
     },
