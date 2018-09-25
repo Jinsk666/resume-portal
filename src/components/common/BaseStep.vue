@@ -34,10 +34,17 @@
 						<div class="right t">{{item.value && item.value.split('-_-')[0] | formatTime('Y.m.d')}} {{item.value ? '~' : ''}} {{item.value && item.value.split('-_-')[1] | formatTime('Y.m.d')}}</div>
 					</el-col>
 					<el-col v-else-if="item.label.indexOf('企业') != -1" :span="16" style="padding-right: 20px;">
-						<img class="icon-map"
+						<!-- <img class="icon-map"
 							src="@/assets/images/icon-map.png" alt=""
 							style="width:20px;"
-							@click="handleShowMap(item.value)">
+							@click="handleShowMap(item.value)"> -->
+							<span
+								class="icon-map"
+								@click="handleShowMap(item.value)"
+							>
+								<svg-icon icon-class="position">
+								</svg-icon>
+							</span>
 						<div class="right t">{{stepData.data.enterpriseSelectName}}</div>
 					</el-col>
 					<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
@@ -54,7 +61,7 @@
 					>
 						<a class="LL-href-doc" :href="item.externalURL">
 							<span class="LL-link-font LL-doc-font ellipsis">{{item.externalName}}</span>
-							<span class="LL-link-icon LL-doc-icon "></span>
+							<span class="LL-doc-icon LL-link-icon"></span>
 						</a>
 					</div>
 				</el-row>
@@ -118,10 +125,17 @@
 								<div class="right t">{{item1.value && item1.value.split('-_-')[0] | formatTime('Y.m.d')}} {{item1.value ? '~' : ''}} {{item1.value && item1.value.split('-_-')[1] | formatTime('Y.m.d')}}</div>
 							</el-col>
 							<el-col v-else-if="item1.label.indexOf('企业') != -1" :span="16" style="padding-right:20px;">
-								<img class="icon-map"
+								<!-- <img class="icon-map"
 									src="@/assets/images/icon-map.png" alt=""
 									style="width:20px;"
-									@click="handleShowMap(item1.value)">
+									@click="handleShowMap(item1.value)"> -->
+									<span
+										class="icon-map"
+										@click="handleShowMap(item.value)"
+									>
+										<svg-icon icon-class="position">
+										</svg-icon>
+									</span>
 								<div class="right t">{{stepData.data.enterpriseSelectName}}</div>
 							</el-col>
 							<el-col v-else :span="16"><div class="right t">{{item1.value}}</div></el-col>
@@ -138,7 +152,7 @@
 							>
 								<a class="LL-href-doc" :href="item.externalURL">
 									<span class="LL-link-font LL-doc-font ellipsis">{{item.externalName}}</span>
-									<span class="LL-link-icon LL-doc-icon"></span>
+									<span class="LL-doc-icon LL-link-icon"></span>
 								</a>
 							</div>
 						</el-row>
@@ -307,8 +321,9 @@
 			border-bottom-right-radius: 3px;
 		}
 		.LL-link-icon {
-			background: #409EFF url('~@/assets/images/icon-doc.png') no-repeat center center;
+			background: url('~@/assets/images/icon-link.png') no-repeat center center;
 			background-size: 14px;
+			background-color: #409EFF!important;
 		}
 	}
 	.LL-href-doc {

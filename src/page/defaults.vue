@@ -55,10 +55,17 @@
 						:key="index">
 						<el-col :span="8"><div class="left">{{item.label}}</div></el-col>
             <el-col v-if="item.label.indexOf('企业') != -1" :span="16" style="padding-right: 20px;">
-              <img class="icon-map"
+              <!-- <img class="icon-map"
                   src="@/assets/images/icon-map.png" alt=""
                   style="width:20px;"
-                  @click="handleShowMap(item.value)">
+                  @click="handleShowMap(item.value)"> -->
+                  <span
+                    class="icon-map"
+                    @click="handleShowMap(item.value)"
+                  >
+                    <svg-icon icon-class="position">
+                    </svg-icon>
+                  </span>
               <div class="right t" @click="handleShowMap(item.value)">{{stepData.enterpriseSelectName}}</div>
             </el-col>
 						<el-col v-else :span="16"><div class="right t">{{item.value}}</div></el-col>
@@ -67,10 +74,17 @@
           <el-row class="factory-info" v-if="!isMaterial">
               <el-col :span="8"><div class="left">企业名称</div></el-col>
               <el-col :span="16" style="padding-right: 20px;">
-                <img class="icon-map"
+                <!-- <img class="icon-map"
                   src="@/assets/images/icon-map.png" alt=""
                   style="width:20px;"
-                  @click="handleShowMap(stepData.insertUser, 'base')">
+                  @click="handleShowMap(stepData.insertUser, 'base')"> -->
+                  <span
+                    class="icon-map"
+                    @click="handleShowMap(stepData.insertUser, 'base')"
+                  >
+                    <svg-icon icon-class="position">
+                    </svg-icon>
+                  </span>
                 <div class="right t" @click="handleShowMap(stepData.insertUser, 'base')">{{stepData.enterpriseName}}</div>
               </el-col>
           </el-row>
@@ -377,7 +391,7 @@ export default {
 			border-bottom-right-radius: 3px;
 		}
 		.LL-link-icon {
-      background: #409EFF url('~@/assets/images/icon-doc.png') no-repeat center center;
+      background: #409EFF url('~@/assets/images/icon-link.png') no-repeat center center;
       background-size: 14px;
 		}
 	}

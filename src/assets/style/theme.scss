@@ -1,6 +1,6 @@
 
 .theme1 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #45BC9C!important;
     }
     .factory-info {
@@ -9,7 +9,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #45BC9C!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #45BC9C!important;
     }
     .el-tabs__nav :hover {
@@ -21,10 +21,13 @@
     .bg-connect div {
         background-image: url('../images/connect.png') !important
     }
+    .LL-doc-icon {
+        background-color: #45BC9C!important;
+    }
 }
 
 .theme2 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #6ACCF1!important;
     }
     .factory-info {
@@ -33,7 +36,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #6ACCF1!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #6ACCF1!important;
     }
     .el-tabs__nav :hover {
@@ -45,10 +48,13 @@
     .bg-connect div {
         background-image: url('../images/theme/theme22.png') !important
     }
+    .LL-doc-icon {
+        background-color: #6ACCF1!important;
+    }
 }
 
 .theme3 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #1E79C5!important;
     }
     .factory-info {
@@ -57,7 +63,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #1E79C5!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #1E79C5!important;
     }
     .el-tabs__nav :hover {
@@ -69,9 +75,12 @@
     .bg-connect div {
         background-image: url('../images/theme/theme33.png') !important
     }
+    .LL-doc-icon {
+        background-color: #1E79C5!important;
+    }
 }
 .theme4 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #6C4BBD!important;
     }
     .factory-info {
@@ -80,7 +89,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #6C4BBD!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #6C4BBD!important;
     }
     .el-tabs__nav :hover {
@@ -92,9 +101,12 @@
     .bg-connect div {
         background-image: url('../images/theme/theme44.png') !important
     }
+    .LL-doc-icon {
+        background-color: #6C4BBD!important;
+    }
 }
 .theme5 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #E1C053!important;
     }
     .factory-info {
@@ -103,7 +115,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #E1C053!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #E1C053!important;
     }
     .el-tabs__nav :hover {
@@ -115,9 +127,12 @@
     .bg-connect div {
         background-image: url('../images/theme/theme55.png') !important
     }
+    .LL-doc-icon {
+        background-color: #E1C053!important;
+    }
 }
 .theme6 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #AC8C42!important;
     }
     .factory-info {
@@ -126,7 +141,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #AC8C42!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #AC8C42!important;
     }
     .el-tabs__nav :hover {
@@ -138,9 +153,12 @@
     .bg-connect div {
         background-image: url('../images/theme/theme66.png') !important
     }
+    .LL-doc-icon {
+        background-color: #AC8C42!important;
+    }
 }
 .theme7 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #EE7373!important;
     }
     .factory-info {
@@ -149,7 +167,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #EE7373!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #EE7373!important;
     }
     .el-tabs__nav :hover {
@@ -161,9 +179,12 @@
     .bg-connect div {
         background-image: url('../images/theme/theme77.png') !important
     }
+    .LL-doc-icon {
+        background-color: #EE7373!important;
+    }
 }
 .theme8 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #F88B36!important;
     }
     .factory-info {
@@ -172,7 +193,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #F88B36!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #F88B36!important;
     }
     .el-tabs__nav :hover {
@@ -184,9 +205,12 @@
     .bg-connect div {
         background-image: url('../images/theme/theme88.png') !important
     }
+    .LL-doc-icon {
+        background-color: #F88B36!important;
+    }
 }
 .theme9 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #0CA344!important;
     }
     .factory-info {
@@ -195,7 +219,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #0CA344!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #0CA344!important;
     }
     .el-tabs__nav :hover {
@@ -207,9 +231,12 @@
     .bg-connect div {
         background-image: url('../images/theme/theme99.png') !important
     }
+    .LL-doc-icon {
+        background-color: #0CA344!important;
+    }
 }
 .theme10 {
-    .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
+    .more-model, .container, .step-edit, .step-edit2, .env-info .env-info-line, .el-tabs__active-bar {
         background: #86B0A4!important;
     }
     .factory-info {
@@ -218,7 +245,7 @@
     .env-info .env-info-pointer {
         border: 5px dashed #86B0A4!important;
     }
-    .el-tabs__item.is-active, .intro .intro-name {
+    .el-tabs__item.is-active, .intro .intro-name, .icon-map, .LL-doc-font {
         color: #86B0A4!important;
     }
     .el-tabs__nav :hover {
@@ -229,5 +256,8 @@
     }
     .bg-connect div {
         background-image: url('../images/theme/theme110.png') !important
+    }
+    .LL-doc-icon {
+        background-color: #86B0A4!important;
     }
 }
