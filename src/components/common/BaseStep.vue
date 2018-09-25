@@ -131,7 +131,7 @@
 									@click="handleShowMap(item1.value)"> -->
 									<span
 										class="icon-map"
-										@click="handleShowMap(item.value)"
+										@click="handleShowMap(item1.value)"
 									>
 										<svg-icon icon-class="position">
 										</svg-icon>
