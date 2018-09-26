@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Defaults from '@/page/defaults'
 import Unfind from '@/page/404'
 import Home from '@/page/home'
+import Comments from '@/page/comments'
+import EditComments from '@/page/editComments'
 //import TreeMore from '@/page/tree-more'
 
 Vue.use(Router)
@@ -27,6 +29,16 @@ export default new Router({
       path: '/defaults',
       name: 'defaults',
       component: Defaults
+    },
+    {
+      path: '/comments',
+      name: 'comments',
+      component: Comments
+    },
+    {
+      path: '/edit-comments',
+      name: 'editComments',
+      component: EditComments
     },
     // {
     //   path: '/tree/more',

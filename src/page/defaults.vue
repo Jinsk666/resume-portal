@@ -164,6 +164,7 @@
           :dCenter="center"
           @handleClose="handleClose"
         ></base-map>
+        <like-comment v-show="!isShowTreeMore"></like-comment>
     </div>
 </template>
 
@@ -173,11 +174,12 @@ import { mapState, mapMutations } from 'vuex';
 import BaseStep from "@/components/common/BaseStep";
 import TreeMore from "@/components/common/TreeMore";
 import BaseMap from "@/components/common/BaseMap";
+import LikeComment from "@/components/common/LikeAndComment";
 import { isImg, formatData, getScrollTop, setScrollTop, template2Data, material2Data } from "@/config/mUtils";
 import { getResumeDetails, getFactory, getBaseFactory } from "@/api";
 
 export default {
-  components: { BaseStep, TreeMore, BaseMap },
+  components: { BaseStep, TreeMore, BaseMap, LikeComment },
   data() {
     return {
       isRender: false, //渲染手风琴
@@ -233,6 +235,9 @@ export default {
           let phone = document.getElementById('phone');
           phone.className = data.data.backColor;
         }
+        sessionStorage.setItem('enterpriseInfoId', data.data.enterpriseInfoId);
+        sessionStorage.setItem('enterpriseName', data.data.enterpriseName);
+        sessionStorage.setItem('uniqueCode', data.data.uniqueCode);
           // 处理数据的地方
         if (index == undefined) {
             template2Data(data.data).then( () => {
@@ -345,6 +350,9 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+#phone {
+  position: relative;
+}
 @import "../assets/style/mixin";
 .icon-map {
   position: absolute;

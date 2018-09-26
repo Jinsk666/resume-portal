@@ -3,3 +3,4 @@ export const splitPoint = text => {
     arr.pop();
     return arr.join('.')
 }
+export { formatTime } from '@/config/mUtils';

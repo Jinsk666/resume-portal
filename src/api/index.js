@@ -19,3 +19,23 @@ export const getFactory = code => fetch('/farmeasy-resume-service/resume/V2.1/re
 export const getBaseFactory = userInfoId => fetch('/farmeasy-auth-service/auth/userInfo/getEnterpriseByUserInfoId',{
     userInfoId
 }, 'POST')
+
+//发表评论
+export const publishComment = (commentContent, commentStars, enterpriseInfoId, enterpriseInfoName, sourceBatchCode) => fetch('/farmeasy-resume-service/resume/V2.1/resumeExhibitionTwoOne/add',{
+    commentContent,
+    commentStars,
+    enterpriseInfoId,
+    enterpriseInfoName,
+    sourceBatchCode
+}, 'POST')
+
+//获取评论列表
+
+export const getCommentsList = (resumeCode, page) => fetch('/farmeasy-resume-service/resume/V2.1/resumeExhibitionTwoOne/getList',{
+    resumeCode,
+    page
+},'POST')
+export const likeArticle = resumeCode => fetch('/farmeasy-resume-service/resume/V2.1/resumeExhibitionTwoOne/updateThumbsUpNum/' + resumeCode,{
+    
+})
+

@@ -6,9 +6,9 @@ import {
 export default async(url = '', data = {}, type = 'GET') => {
 	type = type.toUpperCase();
 	// 测试
-	//let path = '';
+	let path = '';
 	// 正式
-	let path = '/farmeasy-api-gateway';
+	//let path = '/farmeasy-api-gateway';
 	url = baseUrl + path + url;
 	console.log(url);
 	if (type == 'GET') {
