@@ -25,11 +25,11 @@
             <div class="img">
                 <div class="img-container">
                     <img @click="handleLike" class="noLike" v-show="!isLike" src="@/assets/images/comments/1.1.png" alt="">
-                    <img @click="handleLike" class="isLike" v-show="isLike" src="@/assets/images/comments/1.3.png" alt="">
+                    <img class="isLike" v-show="isLike" src="@/assets/images/comments/1.3.png" alt="">
                 </div>
             </div>
             <div class="font">
-                <span class="theme-color">{{setDeleted}}</span>&nbsp;赞
+                <span class="theme-color">{{setThumbsUpNum}}</span>&nbsp;赞
             </div>
         </div>
         <div class="right">
@@ -50,13 +50,13 @@
 <script>
     import { likeArticle, getCommentsList } from '@/api';
     export default {
-        props:['deleted'],
+        props:['thumbsUpNum'],
         data() {
             return {
                 isLike: false,
                 commentsTotal: 0,
                 isLikeCount: 0,
-                setDeleted: this.deleted || 0
+                setThumbsUpNum: this.thumbsUpNum || 0
             }
         },
         computed: {
@@ -64,7 +64,7 @@
         },
         mounted() {
             this.isLike = sessionStorage.getItem('isLike') == 'true' ? true : false;
-            let resumeCode = sessionStorage.getItem('uniqueCode');
+            let resumeCode = this.$route.query.resumeCode;
             getCommentsList(resumeCode, 1).then(data => {
                 if( !data.data ) {
                     this.$toast('获取评论失败');
@@ -75,20 +75,20 @@
         },
         methods:{
             handleLike() {
-                this.isLike = !this.isLike;
-                if( this.isLike ) {
+                this.isLike = true;
+                // if( this.isLike ) {
                     sessionStorage.setItem('isLike', 'true');
-                    this.setDeleted++;
-                    this.isLikeCount++;
+                    this.setThumbsUpNum++;
                     let uniqueCode = sessionStorage.getItem('uniqueCode');
                     likeArticle(uniqueCode).then(data => {
                         if( data.code == '0000' ) this.isLike = true;
+                        else this.isLike = false;
                     });
-                }
-                else {
-                    this.setDeleted > 0 && this.setDeleted--;
-                    sessionStorage.setItem('isLike', 'false');
-                }
+                // }
+                // else {
+                //     this.setThumbsUpNum > 0 && this.setThumbsUpNum--;
+                //     sessionStorage.setItem('isLike', 'false');
+                // }
             }
         }
     }

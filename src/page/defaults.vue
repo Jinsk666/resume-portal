@@ -165,8 +165,8 @@
           @handleClose="handleClose"
         ></base-map>
         <like-comment
-         v-show="!isShowTreeMore"
-         :deleted="stepData.deleted"
+         v-show="!isShowTreeMore && stepData.isComment"
+         :setThumbsUpNum="stepData.setThumbsUpNum"
          ></like-comment>
     </div>
 </template>
@@ -206,6 +206,8 @@ export default {
         resumeDataTwoOnes: [],
         externalQuoteList: [],
         documentUrlList: [],
+        setThumbsUpNum: 0, //点赞
+        isComment: false
       },
       isShowMap: false,
       center:{}, // == mapGeneralInfoList
@@ -234,10 +236,14 @@ export default {
         }
         this.mainLoading.close();
         if( !data.data ) return;
+        let phone = document.getElementById('phone');
         if( data.data.backColor ) {
-          let phone = document.getElementById('phone');
           phone.className = data.data.backColor;
+        }else {
+          phone.className = 'theme1';
+
         }
+        if( data.data.isComment === null ) data.data.isComment = true;
         sessionStorage.setItem('enterpriseInfoId', data.data.enterpriseInfoId);
         sessionStorage.setItem('enterpriseName', data.data.enterpriseName);
         sessionStorage.setItem('uniqueCode', data.data.uniqueCode);
