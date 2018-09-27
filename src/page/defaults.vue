@@ -218,6 +218,9 @@ export default {
         return this.$route.query.resumeCode
       }
   },
+  created() {
+    sessionStorage.setItem('uniqueCode', this.$route.query.resumeCode);
+  },
   mounted: function() {
     this.mainLoading = this.$loading({text:'拼命加载中...'});
     let index = this.$route.query.index;
@@ -246,7 +249,6 @@ export default {
         if( data.data.isComment === null ) data.data.isComment = true;
         sessionStorage.setItem('enterpriseInfoId', data.data.enterpriseInfoId);
         sessionStorage.setItem('enterpriseName', data.data.enterpriseName);
-        sessionStorage.setItem('uniqueCode', data.data.uniqueCode);
           // 处理数据的地方
         if (index == undefined) {
             template2Data(data.data).then( () => {
