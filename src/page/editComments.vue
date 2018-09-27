@@ -45,6 +45,10 @@
                 this.rate = a; this.font = this.map[a];
             },
             commit(){
+                if( !this.textarea ) {
+                    this.$toast('请输入评论内容');
+                    return;
+                }
                 let enterpriseInfoId = sessionStorage.getItem('enterpriseInfoId');
                 let enterpriseName = sessionStorage.getItem('enterpriseName');
                 let uniqueCode = sessionStorage.getItem('uniqueCode');
@@ -65,19 +69,19 @@
         background: #fff;
     }
     .header {
-        color: red;
+        color: #88A2B8;
         font-size: 24px;
         text-align: center;
-        padding-top: 30px;
+        padding-top: 0.3rem;
         .title {
             display: inline-block;
-            padding: 0 10px;
+            padding: 0 0.1rem;
         }
         .line {
-            width: 50px;
+            width: 0.5rem;
             height: 2px;
             display: inline-block;
-            background: red;
+            background: #88A2B8;
             margin-bottom: 7px;
         }
     }
@@ -87,24 +91,24 @@
     .details {
         color: rgb(247, 186, 42);
         font-size: 35px;
-        margin-top: 40px;
+        margin-top: 0.4rem;
         .big {
             font-size: 60px;
         }
     }
     .input {
-        margin: 100px auto 50px;
+        margin: 1rem auto 0.5rem;
         width: 3.4rem;
     }
     .btn {
         color: #fff;
         text-align: center;
-        height: 40px;
-        line-height: 40px;
+        height: 0.4rem;
+        line-height: 0.4rem;
         width: 3.4rem;
-        background: red;
+        background: #51bd9c;
         margin: 0 auto;
         font-size: 20px;
-        border-radius: 30px;
+        border-radius: 0.3rem;
     }
 </style>

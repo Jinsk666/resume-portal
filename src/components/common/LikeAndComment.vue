@@ -1,18 +1,17 @@
 <template>
     <div class="container-bottom">
-        <span class="line"></span>
-        <span class="like">
+        <!-- <span class="like">
             <span class="img-container">
                 <img @click="handleLike" class="noLike" v-show="!isLike" src="@/assets/images/comments/1.1.png" alt="">
                 <img @click="isLike = !isLike" class="isLike" v-show="isLike" src="@/assets/images/comments/1.3.png" alt="">
             </span>
             <span class="p">
-                <span class="theme-color">100</span>
+                <span class="theme-color">{{deleted}}</span>
                 赞
             </span>
         </span>
         <span class="comment">
-            <router-link :to="{name: 'comments', query:{code: 1}}">
+            <router-link :to="{name: 'comments'}">
                 <span class="img-container">
                     <img class="comment-img" src="@/assets/images/comments/1.2.png" alt="">
                 </span>
@@ -21,27 +20,75 @@
                     评论
                 </span>
             </router-link>
-        </span>
+        </span> -->
+        <div class="left">
+            <div class="img">
+                <div class="img-container">
+                    <img @click="handleLike" class="noLike" v-show="!isLike" src="@/assets/images/comments/1.1.png" alt="">
+                    <img @click="handleLike" class="isLike" v-show="isLike" src="@/assets/images/comments/1.3.png" alt="">
+                </div>
+            </div>
+            <div class="font">
+                <span class="theme-color">{{setDeleted}}</span>&nbsp;赞
+            </div>
+        </div>
+        <div class="right">
+            <router-link :to="{name: 'comments'}">
+                <div class="img">
+                    <div class="img-container">
+                        <img class="comment-img" src="@/assets/images/comments/1.2.png" alt="">
+                    </div>
+                </div>
+                <div class="font">
+                    <span class="theme-color">{{commentsTotal}}</span>&nbsp;评论
+                </div>
+            </router-link>
+        </div>
     </div>
 </template>
 
 <script>
-    import { likeArticle } from '@/api';
+    import { likeArticle, getCommentsList } from '@/api';
     export default {
+        props:['deleted'],
         data() {
             return {
-                isLike: false
+                isLike: false,
+                commentsTotal: 0,
+                isLikeCount: 0,
+                setDeleted: this.deleted || 0
             }
         },
-        created() {
+        computed: {
+            
+        },
+        mounted() {
+            this.isLike = sessionStorage.getItem('isLike') == 'true' ? true : false;
+            let resumeCode = sessionStorage.getItem('uniqueCode');
+            getCommentsList(resumeCode, 1).then(data => {
+                if( !data.data ) {
+                    this.$toast('获取评论失败');
+                    return;
+                }
+                this.commentsTotal = data.data.totalNum || 0;
+            })
         },
         methods:{
             handleLike() {
                 this.isLike = !this.isLike;
-                let uniqueCode = sessionStorage.getItem('uniqueCode');
-                likeArticle(uniqueCode).then(data => {
-                    if( data.code == '0000' ) this.isLike = true;
-                });
+                if( this.isLike ) {
+                    sessionStorage.setItem('isLike', 'true');
+                    this.setDeleted++;
+                    this.isLikeCount++;
+                    let uniqueCode = sessionStorage.getItem('uniqueCode');
+                    likeArticle(uniqueCode).then(data => {
+                        if( data.code == '0000' ) this.isLike = true;
+                    });
+                }
+                else {
+                    this.setDeleted > 0 && this.setDeleted--;
+                    sessionStorage.setItem('isLike', 'false');
+                }
             }
         }
     }
@@ -53,52 +100,40 @@
         bottom: 0;
         width: 100%;
         background: #fff;
-        font-size: 14px;
-        padding: 10px 0;
-        >span {
+        font-size: .14rem;
+        padding: 0.1rem 0;
+        height: .6rem;
+        z-index:999999999;
+        >div {
             display: inline-block;
             width: 49%;
             text-align: center;
-            height: 42px;
-            line-height: 42px;
-            overflow: hidden;
-            position: relative;
+            height: 0.42rem;
+            line-height: 0.42rem;
         }
-        .like {
-            .isLike {
-                width: 33px;
-                height: 33px
-            }
-            .noLike {
-                width: 22px;
-            }
-        }
-        .comment-img {
-            width: 22px;
+        .left {
+            float: left;
+            width: 49%;
+            border-right: 1px solid #e7e7e7;
         }
         .img-container {
             display: inline-block;
-            width: 40px;
-            height: 40px;
-            position: absolute;
-            left: 40%;
-            top: 50%;
-            transform: translate(-40%, -50%);
-
-
+            padding-top: 4px;
+            width: 0.22rem;
         }
-        .p {
-            position: absolute;
-            left: 70%;
-            top: 50%;
-            transform: translate(-70%, -50%);
+        .img {
+            float: left;
+            width: 40%;
+            text-align: right;
         }
-        .line {
-            width: 1px;
-            height: 32px;
-            background: #e7e7e7;
-            position: absolute;
-            left: 50%;
+        .font {
+            float: right;
+            width: 55%;
+            text-align: left;
+        }
+        .right {
+            float: right;
+            width: 49%;
         }
     }
 </style>

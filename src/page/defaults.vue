@@ -164,7 +164,10 @@
           :dCenter="center"
           @handleClose="handleClose"
         ></base-map>
-        <like-comment v-show="!isShowTreeMore"></like-comment>
+        <like-comment
+         v-show="!isShowTreeMore"
+         :deleted="stepData.deleted"
+         ></like-comment>
     </div>
 </template>
 

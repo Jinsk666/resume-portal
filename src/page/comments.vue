@@ -24,7 +24,9 @@
                         {{item.insertTime | formatTime('m-d H:i')}}
                     </div>
                     <div class="one-left">
-                        <img src="" alt="">
+                        <div class="img-container">
+                            <img src="@/assets/images/comments/tourist.png" alt="">
+                        </div>
                     </div>
                     <div class="one-right">
                         <p>游客</p>
@@ -50,10 +52,10 @@
     export default {
         data() {
             return {
-                data:{},
+                data:{resumeCommentTwoOneResponseList:[]},
             }
         },
-        created() {
+        mounted() {
             let resumeCode = sessionStorage.getItem('uniqueCode');
             getCommentsList(resumeCode, 1).then(data => {
                 if( !data.data ) {
@@ -81,7 +83,7 @@
         height: 100%;
     }
     .header-1 {
-        height: 60px;
+        height: 0.6rem;
     }
     .header {
         background: #fff;
@@ -91,69 +93,74 @@
         top: 0;
         text-align: center;
         font-size: .18rem;
-        height: 60px;
-        line-height: 60px;
-        padding: 0 30px;
+        height: 0.6rem;
+        line-height: 0.6rem;
+        padding: 0 0.3rem;
         font-weight: 600;
         border-bottom: 1px solid #e7e7e7;
         i {
             float: left;
-            margin-top: 20px;
+            margin-top: 0.2rem;
         }
     }
     .container {
-        margin-bottom: 60px;
+        margin-bottom: 0.6rem;
         position: relative;
         z-index:1;
         background: #fff;
     }
     .comments-list {
         .one {
-            padding: 20px 0;
-            min-height: 100px;
+            padding: 0.2rem 0;
+            min-height: 1rem;
             position: relative;
             width: 100%;
             font-size: 14px;
             border-bottom: 1px solid #e7e7e7;
+            .img-container {
+                width: 70%;
+                display: inline-block;
+            }
             .one-left {
                 float: left;
-                width: 60px;
+                width: 0.8rem;
+                text-align: center;
             }
             .one-right {
-                margin-left: 60px;
+                margin-left: 0.8rem;
                 >p {
-                    margin-bottom: 10px;
+                    margin-bottom: 0.1rem;
                 }
             }
             .date {
                 position: absolute;
-                top: 20px;
-                right: 20px;
+                top: 0.2rem;
+                right: 0.2rem;
             }
             .font {
                 font-size: 14px;
-                margin-top: 10px;
+                margin-top: 0.1rem;
             }
         }
     }
     .fraction {
-        height: 80px;
+        height: 0.8rem;
         overflow: hidden;
         border-bottom: 1px solid #e7e7e7;
         .point {
             float: left;
-            width: 80px;
-            height: 80px;
-            line-height: 80px;
+            width: 0.8rem;
+            height: 0.8rem;
+            line-height: 0.8rem;
             color: #F7BA2A;
             font-size: 40px;
-            padding-left: 30px;
+            padding-left: 0.3rem;
         }
         .star {
-            margin-left: 100px;
-            height: 80px;
+            margin-left: 1rem;
+            height: 0.8rem;
             position:relative;
-            padding-top: 22px;
+            padding-top: 0.22rem;
             //top: -30px;
             >div {
                 font-size: 14px;
@@ -166,11 +173,11 @@
         position:fixed;
         z-index:99;
         bottom: 0;
-        height: 60px;
-        line-height: 60px;
+        height: 0.6rem;
+        line-height: 0.6rem;
         color: #ddd;
         font-size: 20px;
-        padding-left: 30px;
+        padding-left: 0.3rem;
         border-top: 1px solid #e7e7e7;
     }
 </style>
