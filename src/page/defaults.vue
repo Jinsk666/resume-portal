@@ -361,10 +361,19 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+@import "../assets/style/mixin";
+
 #phone {
   position: relative;
 }
-@import "../assets/style/mixin";
+#phone:after {
+    //content: '亲, 没有更多数据了';
+    font-size:0.18rem;
+    float:left;
+    width: 100%;
+    text-align: center;
+    margin-top: 12px;
+  }
 .icon-map {
   position: absolute;
   right: 0;

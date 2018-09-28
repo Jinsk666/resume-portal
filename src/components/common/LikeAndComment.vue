@@ -23,9 +23,9 @@
         </span> -->
         <div class="left">
             <div class="img">
-                <div class="img-container">
-                    <img @click="handleLike" class="noLike" v-show="!isLike" src="@/assets/images/comments/1.1.png" alt="">
-                    <img class="isLike" v-show="isLike" src="@/assets/images/comments/1.3.png" alt="">
+                <div @click="handleLike" v-show="!isLike" class="img-container good-img-1">
+                </div>
+                <div v-show="isLike" class="img-container good-img-2">
                 </div>
             </div>
             <div class="font">
@@ -35,8 +35,7 @@
         <div class="right">
             <router-link :to="{name: 'comments'}">
                 <div class="img">
-                    <div class="img-container">
-                        <img class="comment-img" src="@/assets/images/comments/1.2.png" alt="">
+                    <div class="img-container comment-img">
                     </div>
                 </div>
                 <div class="font">
@@ -118,8 +117,9 @@
         }
         .img-container {
             display: inline-block;
-            padding-top: 4px;
-            width: 0.22rem;
+            width: 0.3rem;
+            height: 0.32rem;
+            margin-top: 0.04rem;
         }
         .img {
             float: left;
@@ -134,6 +134,19 @@
         .right {
             float: right;
             width: 49%;
+        }
+        .comment-img {
+            background: url('~@/assets/images/comments/1.2.png') no-repeat center center;
+            background-size: 0.22rem;
+        }
+        .good-img-1 {
+            background: url('~@/assets/images/comments/1.1.png') no-repeat center center;
+            background-size: 0.22rem;
+        }
+        .good-img-2 {
+            margin-top: 0;
+            background: url('~@/assets/images/comments/1.3.png') no-repeat top center;
+            background-size: 0.3rem;
         }
     }
 </style>
