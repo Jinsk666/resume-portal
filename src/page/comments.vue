@@ -38,12 +38,12 @@
                 </div>
             </div>
         </div>
-        <div class="bottom">
-            <router-link :to="{name:'editComments'}">
+        <router-link :to="{name:'editComments'}">
+            <div class="bottom">
                 <i class="el-icon-edit"></i>
                 写评论..
-            </router-link>
-        </div>
+            </div>
+        </router-link>
     </div>
 </template>
 
@@ -153,11 +153,11 @@
             height: 0.8rem;
             line-height: 0.8rem;
             color: #F7BA2A;
-            font-size: 40px;
-            padding-left: 0.3rem;
+            font-size: 0.6rem;
+            text-align: center;
         }
         .star {
-            margin-left: 1rem;
+            margin-left: 0.8rem;
             height: 0.8rem;
             position:relative;
             padding-top: 0.22rem;
@@ -175,7 +175,7 @@
         bottom: 0;
         height: 0.6rem;
         line-height: 0.6rem;
-        color: #ddd;
+        // color: #ddd;
         font-size: 20px;
         padding-left: 0.3rem;
         border-top: 1px solid #e7e7e7;
