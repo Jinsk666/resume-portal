@@ -323,6 +323,11 @@ export default {
     },
     // 地图
     handleShowMap(code, type) {
+      if( sessionStorage.getItem('enterpriseInfoId') == 126 ){
+          window.location.href="http://app.farmeasy.cn/WeiXinWebGis.html?enter_id=126&base_id=223";
+          return;
+      }
+      // 分割线 10-10
       if( !code ) {
         this.$toast('暂时无法定位');
         return;
@@ -341,7 +346,7 @@ export default {
           this.loading.close();
         })
       }else {
-        if( this.stepData.enterpriseInfoId == 126 ){
+        if( sessionStorage.getItem('enterpriseInfoId') == 126 ){
           this.loading.close();
           window.location.href="http://app.farmeasy.cn/WeiXinWebGis.html?enter_id=126&base_id=223";
         }else {

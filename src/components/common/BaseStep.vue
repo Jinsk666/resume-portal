@@ -250,7 +250,10 @@
 				this.$emit('viewMore')
 			},
 			handleShowMap(code) {
-				debugger
+				if( sessionStorage.getItem('enterpriseInfoId') == 126 ){
+					window.location.href="http://app.farmeasy.cn/WeiXinWebGis.html?enter_id=126&base_id=223";
+					return;
+				}
 				if( !code ) return;
 				this.$emit('handleShowMap', code)
 			}
