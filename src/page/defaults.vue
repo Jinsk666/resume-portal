@@ -341,17 +341,22 @@ export default {
           this.loading.close();
         })
       }else {
-        getBaseFactory(code).then( data => {
+        if( this.stepData.enterpriseInfoId == 126 ){
           this.loading.close();
-          if( data.data && data.data.longitude ){
-            this.center = [{value: data.data.longitude}, {value: data.data.latitude}]
-            this.isShowMap = true;
-          }else {
-            this.$toast('暂时无法定位');
-          }
-        }).catch( err => {
-          this.loading.close();
-        })
+          window.location.href="http://app.farmeasy.cn/WeiXinWebGis.html?enter_id=126&base_id=223";
+        }else {
+          getBaseFactory(code).then( data => {
+            this.loading.close();
+            if( data.data && data.data.longitude ){
+              this.center = [{value: data.data.longitude}, {value: data.data.latitude}]
+              this.isShowMap = true;
+            }else {
+              this.$toast('暂时无法定位');
+            }
+          }).catch( err => {
+            this.loading.close();
+          })
+        }
       }
     },
     handleClose() {

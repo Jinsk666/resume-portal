@@ -250,6 +250,7 @@
 				this.$emit('viewMore')
 			},
 			handleShowMap(code) {
+				debugger
 				if( !code ) return;
 				this.$emit('handleShowMap', code)
 			}
