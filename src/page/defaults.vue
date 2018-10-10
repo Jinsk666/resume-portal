@@ -164,10 +164,10 @@
           :dCenter="center"
           @handleClose="handleClose"
         ></base-map>
-        <like-comment
+        <!-- <like-comment
          v-show="!isShowTreeMore && stepData.isComment"
          :setThumbsUpNum="stepData.setThumbsUpNum"
-         ></like-comment>
+         ></like-comment> -->
     </div>
 </template>
 
@@ -323,7 +323,7 @@ export default {
     },
     // 地图
     handleShowMap(code, type) {
-      if( sessionStorage.getItem('enterpriseInfoId') == 126 ){
+      if( sessionStorage.getItem('enterpriseInfoId') == 21 ){
           window.location.href="http://app.farmeasy.cn/WeiXinWebGis.html?enter_id=126&base_id=223";
           return;
       }
@@ -346,7 +346,7 @@ export default {
           this.loading.close();
         })
       }else {
-        if( sessionStorage.getItem('enterpriseInfoId') == 126 ){
+        if( sessionStorage.getItem('enterpriseInfoId') == 21 ){
           this.loading.close();
           window.location.href="http://app.farmeasy.cn/WeiXinWebGis.html?enter_id=126&base_id=223";
         }else {
