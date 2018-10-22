@@ -32,7 +32,7 @@
                 <span class="theme-color">{{setThumbsUpNum}}</span>&nbsp;赞
             </div>
         </div>
-        <div class="right">
+        <div class="right" v-if="!isEdit">
             <router-link :to="{name: 'comments'}">
                 <div class="img">
                     <div class="img-container comment-img">
@@ -42,6 +42,15 @@
                     <span class="theme-color">{{commentsTotal}}</span>&nbsp;评论
                 </div>
             </router-link>
+        </div>
+        <div v-else>
+            <div class="img">
+                <div class="img-container comment-img">
+                </div>
+            </div>
+            <div class="font">
+                <span class="theme-color">{{commentsTotal}}</span>&nbsp;评论
+            </div>
         </div>
     </div>
 </template>
@@ -65,6 +74,9 @@
                 set: function(newValue) {
                     this.thumbsUpNum = newValue;
                 }
+            },
+            isEdit: function() {
+                return this.$route.query.isComment;
             }
         },
         mounted() {
@@ -80,6 +92,7 @@
         },
         methods:{
             handleLike() {
+                if( this.isEdit ) return;
                 this.isLike = true;
                 // if( this.isLike ) {
                     sessionStorage.setItem('isLike', 'true');
