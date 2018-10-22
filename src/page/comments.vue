@@ -1,7 +1,9 @@
 <template>
     <div class="and">
         <header class="header">
-            <i class="el-icon-arrow-left" @click="back"></i>
+            <span>
+                <i class="el-icon-arrow-left" @click="back"></i>
+            </span>
             全部评论
         </header>
         <div class="header-1"></div>
@@ -95,12 +97,15 @@
         font-size: .18rem;
         height: 0.6rem;
         line-height: 0.6rem;
-        padding: 0 0.3rem;
+        padding: 0 0.16rem;
         font-weight: 600;
         border-bottom: 1px solid #e7e7e7;
         i {
             float: left;
             margin-top: 0.2rem;
+        }
+        span {
+            font-size: .24rem;
         }
     }
     .container {
@@ -153,11 +158,12 @@
             height: 0.8rem;
             line-height: 0.8rem;
             color: #F7BA2A;
-            font-size: 0.6rem;
+            font-size: 0.5rem;
             text-align: center;
+            padding-left: .1rem;
         }
         .star {
-            margin-left: 0.8rem;
+            margin-left: 0.9rem;
             height: 0.8rem;
             position:relative;
             padding-top: 0.22rem;

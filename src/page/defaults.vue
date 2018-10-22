@@ -164,10 +164,10 @@
           :dCenter="center"
           @handleClose="handleClose"
         ></base-map>
-        <!-- <like-comment
+        <like-comment
          v-show="!isShowTreeMore && stepData.isComment"
          :setThumbsUpNum="stepData.setThumbsUpNum"
-         ></like-comment> -->
+         ></like-comment>
     </div>
 </template>
 
