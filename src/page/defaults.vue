@@ -165,8 +165,8 @@
           @handleClose="handleClose"
         ></base-map>
         <like-comment
-         v-show="!isShowTreeMore && stepData.isComment"
-         :setThumbsUpNum="stepData.setThumbsUpNum"
+         v-show="!isShowTreeMore && stepData.isComment && isLoaded"
+         :thumbsUpNum="stepData.thumbsUpNum"
          ></like-comment>
     </div>
 </template>
@@ -206,11 +206,12 @@ export default {
         resumeDataTwoOnes: [],
         externalQuoteList: [],
         documentUrlList: [],
-        setThumbsUpNum: 0, //点赞
+        thumbsUpNum: 0, //点赞
         isComment: false
       },
       isShowMap: false,
       center:{}, // == mapGeneralInfoList
+      isLoaded: false
     };
   },
   computed: {
@@ -222,6 +223,7 @@ export default {
     sessionStorage.setItem('uniqueCode', this.$route.query.resumeCode);
   },
   mounted: function() {
+    this.isLoaded = false;
     this.mainLoading = this.$loading({text:'拼命加载中...'});
     let index = this.$route.query.index;
     this.isMaterial = this.$route.query.isMaterial || false;
@@ -230,6 +232,7 @@ export default {
       //   window.location.reload();
       // }
       getResumeDetails(resumeCode).then(data => {
+        this.isLoaded = true;
         // 置入 皮肤
         try{
           let dom = document.querySelectorAll('.el-loading-mask')[0];
@@ -282,6 +285,7 @@ export default {
             // })
         }
       }).catch(() => {
+        this.isLoaded = true;
         this.mainLoading.close()
         try{
           let dom = document.querySelectorAll('.el-loading-mask')[0];

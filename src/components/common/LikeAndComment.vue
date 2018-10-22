@@ -55,11 +55,17 @@
                 isLike: false,
                 commentsTotal: 0,
                 isLikeCount: 0,
-                setThumbsUpNum: this.thumbsUpNum || 0
             }
         },
         computed: {
-            
+            setThumbsUpNum: {
+                get: function() {
+                    return this.thumbsUpNum || 0;
+                },
+                set: function(newValue) {
+                    this.thumbsUpNum = newValue;
+                }
+            }
         },
         mounted() {
             this.isLike = sessionStorage.getItem('isLike') == 'true' ? true : false;
@@ -97,7 +103,7 @@
     .container-bottom {
         position: fixed;
         bottom: 0;
-        width: 100%;
+        width: 3.75rem;
         background: #fff;
         font-size: .14rem;
         padding: 0.1rem 0;
